@@ -1,6 +1,6 @@
 # PinAdmin
 
-Rapidly build administrative applications .
+Rapidly build administrative application based on Laravel.
 
 ## Installation
 
