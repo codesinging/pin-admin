@@ -1,0 +1,24 @@
+{
+    "name": "codesinging/pin-admin",
+    "description": "Rapidly build administrative applications .",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "codesinging",
+            "email": "codesinging@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodeSinging\\PinAdmin\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CodeSinging\\PinAdmin\\Tests\\": "tests"
+        }
+    }
+}
