@@ -9,7 +9,11 @@
         }
     ],
     "require": {
-        "php": ">7.1"
+        "php": "^7.3|^8.0",
+        "laravel/framework": "^8.32"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.13"
     },
     "autoload": {
         "psr-4": {
@@ -19,6 +23,16 @@
     "autoload-dev": {
         "psr-4": {
             "CodeSinging\\PinAdmin\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CodeSinging\\PinAdmin\\Foundation\\AdminServiceProvider"
+            ],
+            "aliases": {
+                "Admin": "CodeSinging\\PinAdmin\\Facades\\Admin"
+            }
         }
     }
 }
