@@ -6,6 +6,9 @@
 
 namespace CodeSinging\PinAdmin\Foundation;
 
+use CodeSinging\PinAdmin\Console\Commands\AdminCommand;
+use CodeSinging\PinAdmin\Console\Commands\ListCommand;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider
@@ -16,6 +19,8 @@ class AdminServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
+        AdminCommand::class,
+        ListCommand::class,
     ];
 
     /**
@@ -32,6 +37,8 @@ class AdminServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerBinding();
+        $this->registerCommands();
+        $this->registerBinding();
     }
 
     /**
@@ -47,5 +54,28 @@ class AdminServiceProvider extends ServiceProvider
     private function registerBinding(): void
     {
         $this->app->singleton(Admin::NAME, Admin::class);
+    }
+
+    /**
+     * Register PinAdmin's console commands.
+     */
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->commands);
+        }
+    }
+
+    /**
+     * Register middleware for the application routes.
+     */
+    protected function registerMiddleware(): void
+    {
+        /** @var Router $router */
+        $router = $this->app['router'];
+
+        foreach ($this->middlewares as $key => $middleware) {
+            $router->aliasMiddleware($key, $middleware);
+        }
     }
 }
