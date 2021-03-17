@@ -54,6 +54,6 @@ LOGO;
 
     protected function outputBrand(): void
     {
-        $this->line(sprintf('<comment>%s</comment> <info>%s</info> %s', Admin::BRAND, Admin::VERSION, Admin::SLOGAN));
+        $this->line(sprintf('<info>%s</info>(<comment>%s</comment>): %s.', Admin::BRAND, Admin::VERSION, Admin::SLOGAN));
     }
 }

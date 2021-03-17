@@ -7,8 +7,10 @@
 namespace CodeSinging\PinAdmin\Foundation;
 
 use CodeSinging\PinAdmin\Console\Commands\AdminCommand;
+use CodeSinging\PinAdmin\Console\Commands\InstallCommand;
 use CodeSinging\PinAdmin\Console\Commands\ListCommand;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
+use CodeSinging\PinAdmin\Middleware\AdminAuthenticate;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +23,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     protected $commands = [
         AdminCommand::class,
+        InstallCommand::class,
         ListCommand::class,
     ];
 
@@ -30,6 +33,7 @@ class AdminServiceProvider extends ServiceProvider
      * @var array
      */
     protected $middlewares = [
+        'admin.auth' => AdminAuthenticate::class,
     ];
 
     /**
@@ -39,7 +43,7 @@ class AdminServiceProvider extends ServiceProvider
     {
         $this->registerBinding();
         $this->registerCommands();
-        $this->registerBinding();
+        $this->registerMiddleware();
     }
 
     /**
@@ -47,6 +51,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->publishResources();
         $this->loadRoutes();
         $this->loadViews();
         $this->loadMigrations();

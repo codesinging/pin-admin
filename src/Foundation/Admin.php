@@ -6,6 +6,7 @@
 
 namespace CodeSinging\PinAdmin\Foundation;
 
+use Closure;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -15,6 +16,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -52,6 +54,7 @@ class Admin
 
     /**
      * Retrieve the version.
+     *
      * @return string
      */
     public function version(): string
@@ -61,6 +64,7 @@ class Admin
 
     /**
      * Retrieve the brand.
+     *
      * @return string
      */
     public function brand(): string
@@ -70,6 +74,7 @@ class Admin
 
     /**
      * Retrieve the slogan.
+     *
      * @return string
      */
     public function slogan(): string
@@ -79,6 +84,7 @@ class Admin
 
     /**
      * Retrieve the name of PinAdmin.
+     *
      * @return string
      */
     public function name(): string
@@ -88,6 +94,7 @@ class Admin
 
     /**
      * Retrieve the guard of PinAdmin.
+     *
      * @return string
      */
     public function guard(): string
@@ -97,7 +104,9 @@ class Admin
 
     /**
      * Get the package path of PinAdmin.
+     *
      * @param string $path
+     *
      * @return string
      */
     public function packagePath(string $path = ''): string
@@ -107,7 +116,9 @@ class Admin
 
     /**
      * Retrieve the directory.
+     *
      * @param string $path
+     *
      * @return string
      */
     public function directory(string $path = ''): string
@@ -117,7 +128,9 @@ class Admin
 
     /**
      * Get the application path.
+     *
      * @param string $path
+     *
      * @return string
      */
     public function path(string $path = ''): string
@@ -127,7 +140,9 @@ class Admin
 
     /**
      * Get the application namespace.
+     *
      * @param string $path
+     *
      * @return string
      */
     public function getNamespace(string $path = ''): string
@@ -137,8 +152,10 @@ class Admin
 
     /**
      * Get or set the specified configuration value of the PinAdmin application.
+     *
      * @param null|array|string $key
      * @param null|mixed $default
+     *
      * @return $this|array|mixed
      */
     public function config($key = null, $default = null)
@@ -159,18 +176,21 @@ class Admin
 
     /**
      * Get the route prefix of PinAdmin application.
-     * @return string
+     *
+     * @return string|null
      */
-    public function routePrefix(): string
+    public function routePrefix(): ?string
     {
         return $this->config('route_prefix');
     }
 
     /**
      * Generate the URL of PinAdmin application to a named route.
+     *
      * @param string $name
      * @param array $parameters
      * @param bool $absolute
+     *
      * @return string
      */
     public function route(string $name, array $parameters = [], bool $absolute = true): string
@@ -180,9 +200,11 @@ class Admin
 
     /**
      * Generate a url for the PinAdmin application.
+     *
      * @param string|null $path
      * @param array $parameters
      * @param bool|null $secure
+     *
      * @return Application|UrlGenerator|string
      */
     public function url(string $path = null, array $parameters = [], bool $secure = null)
@@ -194,8 +216,10 @@ class Admin
 
     /**
      * Get a absolute url for the PinAdmin application.
+     *
      * @param string $path
      * @param array $parameters
+     *
      * @return string
      */
     public function link(string $path = '', array $parameters = []): string
@@ -212,6 +236,7 @@ class Admin
 
     /**
      * The home's link of the PinAdmin application.
+     *
      * @return string
      */
     public function home(): string
@@ -221,7 +246,9 @@ class Admin
 
     /**
      * Get the assets url of PinAdmin.
+     *
      * @param string $path
+     *
      * @return string
      */
     public function asset(string $path = ''): string
@@ -247,7 +274,9 @@ class Admin
 
     /**
      * Get the PinAdmin view template.
+     *
      * @param string $path
+     *
      * @return string
      */
     public function template(string $path): string
@@ -257,9 +286,11 @@ class Admin
 
     /**
      * Get the view for PinAdmin.
+     *
      * @param string $view
      * @param array $data
      * @param array $mergeData
+     *
      * @return Application|Factory|View
      */
     public function view(string $view, $data = [], $mergeData = [])
@@ -269,6 +300,7 @@ class Admin
 
     /**
      * Get the available auth instance with the Admin's guard.
+     *
      * @return Guard|StatefulGuard
      */
     public function auth()
@@ -278,10 +310,36 @@ class Admin
 
     /**
      * Get the currently authenticated user.
+     *
      * @return Authenticatable|null
      */
     public function user(): ?Authenticatable
     {
         return $this->auth()->user();
+    }
+
+    /**
+     * Set routes of the PinAdmin application.
+     *
+     * @param Closure $closure
+     * @param bool $auth
+     *
+     * @return $this
+     */
+    public function routeGroup(Closure $closure, bool $auth = true): self
+    {
+        $middleware = ['web'] + $this->config('middleware', []);
+        if ($auth) {
+            $middleware = array_merge($middleware, ['admin.auth:' . $this->guard()]);
+        }
+
+        Route::prefix($this->routePrefix())
+            ->name($this->name() . '.')
+            ->middleware($middleware)
+            ->group(function () use ($closure) {
+                call_user_func($closure);
+            });
+
+        return $this;
     }
 }

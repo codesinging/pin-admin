@@ -6,6 +6,7 @@
 
 namespace CodeSinging\PinAdmin\Facades;
 
+use Closure;
 use CodeSinging\PinAdmin\Foundation\Admin as AdminClass;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -41,6 +42,7 @@ use Illuminate\Support\HtmlString;
  * @method static Application|Factory|View view(string $view, $data = [], $mergeData = [])
  * @method static Guard|StatefulGuard auth()
  * @method static Authenticatable|null user()
+ * @method static AdminClass routeGroup(Closure $closure, bool $auth = true)
  *
  * @package CodeSinging\PinAdmin\Facades
  */

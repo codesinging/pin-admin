@@ -61,24 +61,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | The authentication middleware of the PinAdmin application
-    |--------------------------------------------------------------------------
-    |
-    | All the middleware that only apply for the authentication routes.
-    */
-    'auth_middleware' => [],
-
-    /*
-    |--------------------------------------------------------------------------
-    | The guest middleware of the PinAdmin application
-    |--------------------------------------------------------------------------
-    |
-    | All the middleware that only apply for the guest routes.
-    */
-    'guest_middleware' => [],
-
-    /*
-    |--------------------------------------------------------------------------
     | The auth guard of the PinAdmin application
     |--------------------------------------------------------------------------
     |
