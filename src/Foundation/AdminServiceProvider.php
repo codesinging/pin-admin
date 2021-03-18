@@ -9,6 +9,7 @@ namespace CodeSinging\PinAdmin\Foundation;
 use CodeSinging\PinAdmin\Console\Commands\AdminCommand;
 use CodeSinging\PinAdmin\Console\Commands\InstallCommand;
 use CodeSinging\PinAdmin\Console\Commands\ListCommand;
+use CodeSinging\PinAdmin\Console\Commands\PublishCommand;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Middleware\AdminAuthenticate;
 use Illuminate\Routing\Router;
@@ -25,6 +26,7 @@ class AdminServiceProvider extends ServiceProvider
         AdminCommand::class,
         InstallCommand::class,
         ListCommand::class,
+        PublishCommand::class,
     ];
 
     /**
@@ -95,15 +97,12 @@ class AdminServiceProvider extends ServiceProvider
     private function publishResources(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes(
-                [
-                    AdminFacade::packagePath('publishes/config') => config_path(),
-                    AdminFacade::packagePath('publishes/routes') => base_path('routes'),
-                    AdminFacade::packagePath('publishes/assets') => public_path('static/vendor/' . AdminFacade::name()),
-                    AdminFacade::packagePath('publishes/images') => public_path('static/vendor/' . AdminFacade::name() . '/images'),
-                ],
-                AdminFacade::name()
-            );
+            $this->publishes([AdminFacade::packagePath('publishes/config') => config_path()], AdminFacade::name() . '-config');
+            $this->publishes([AdminFacade::packagePath('publishes/routes') => base_path('routes')], AdminFacade::name() . '-route');
+            $this->publishes([
+                AdminFacade::packagePath('publishes/assets') => public_path('static/vendor/' . AdminFacade::name()),
+                AdminFacade::packagePath('publishes/images') => public_path('static/vendor/' . AdminFacade::name() . '/images'),
+            ], AdminFacade::name() . '-asset');
         }
     }
 
@@ -114,7 +113,7 @@ class AdminServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(AdminFacade::packagePath('routes/web.php'));
 
-        if (is_file($route = base_path('routes/'. AdminFacade::name() . '.php'))){
+        if (is_file($route = base_path('routes/' . AdminFacade::name() . '.php'))) {
             $this->loadRoutesFrom($route);
         }
     }

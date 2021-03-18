@@ -6,9 +6,22 @@
 
 namespace CodeSinging\PinAdmin\Models;
 
-use CodeSinging\PinAdmin\Models\Support\AuthModel;
-
 class AdminUser extends AuthModel
 {
+    protected $fillable = [
+        'mobile',
+        'name',
+        'password',
+    ];
 
+    protected $hidden = [
+        'password',
+    ];
+
+    public function setPasswordAttribute($value)
+    {
+        if (!empty($value)){
+            $this->attributes['password'] = bcrypt($value);
+        }
+    }
 }

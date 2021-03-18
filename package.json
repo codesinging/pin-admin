@@ -7,11 +7,15 @@
         "production": "mix --production"
     },
     "dependencies": {
+        "axios": "^0.21.1",
         "element-plus": "^1.0.2-beta.35",
+        "particles.js": "^2.0.0",
+        "tailwindcss": "^2.0.4",
         "vue": "^3.0.7"
     },
     "devDependencies": {
         "@vue/compiler-sfc": "^3.0.7",
+        "autoprefixer": "^10.2.5",
         "laravel-mix": "^6.0.13",
         "postcss": "^8.1",
         "vue-loader": "^16.1.0"
