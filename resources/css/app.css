@@ -2,4 +2,8 @@
 @import "~tailwindcss/components.css";
 @import "~tailwindcss/utilities.css";
 
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
 @import "~element-plus/lib/theme-chalk/index.css";
+
+@import "resets/menu.css";

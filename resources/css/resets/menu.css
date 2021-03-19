@@ -1,0 +1,16 @@
+.el-menu {
+    border-right: none !important;
+}
+
+.el-menu-item i,
+.el-submenu i {
+    color: #ffffff;
+    width: 24px;
+    font-size: 16px;
+    text-align: center;
+    display: inline-block;
+}
+
+.el-menu-item.is-active {
+    background-color: #2d3748 !important;
+}

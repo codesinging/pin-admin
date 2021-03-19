@@ -5,6 +5,9 @@ import mixin from "./utils/mixin"
 import http from "./utils/http"
 import components from "./components"
 
+window.md5 = require('blueimp-md5')
+window.fullscreen = require('screenfull')
+
 window.admin = {
     name: 'PinAdmin',
     message: ElMessage,

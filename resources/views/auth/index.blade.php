@@ -2,6 +2,7 @@
 
 @section('content')
     <div id="app" class="h-full flex items-center justify-center">
+
         <particles-js></particles-js>
 
         <el-card class="w-120 z-10" @keyup.enter="onSubmit">

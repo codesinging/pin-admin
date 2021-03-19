@@ -56,7 +56,7 @@ class AdminMenuSeeder extends Seeder
                         'name' => '管理员管理',
                         'url' => 'admin_users',
                         'icon' => 'bi-person',
-                        'sort' => 8,
+                        'sort' => 2,
                     ],
                     [
                         'name' => '后台菜单管理',

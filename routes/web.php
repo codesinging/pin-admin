@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 Admin::routeGroup(function (){
 
     Route::get('/', [Controllers\IndexController::class, 'index'])->name('index.index');
+    Route::get('/home', [Controllers\IndexController::class, 'home'])->name('index.home');
+
+    Admin::resourceRoutes('admin_menus', Controllers\AdminMenusController::class);
 
 });
 

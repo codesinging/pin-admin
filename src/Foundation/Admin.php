@@ -342,4 +342,25 @@ class Admin
 
         return $this;
     }
+
+    /**
+     * Set resource routes.
+     *
+     * @param string $name
+     * @param string $controller
+     * @param array $routes
+     *
+     * @return $this
+     */
+    public function resourceRoutes(string $name, string $controller, array $routes = ['index', 'lists', 'store', 'update', 'destroy']): self
+    {
+        $singularName = Str::singular($name);
+        in_array('index', $routes) and Route::get($name, [$controller, 'index'])->name($name.'.index');
+        in_array('lists', $routes) and Route::get($name . '/lists', [$controller, 'lists'])->name($name.'.lists');
+        in_array('store', $routes) and Route::post($name, [$controller, 'store'])->name($name.'.store');
+        in_array('update', $routes) and Route::put("{$name}/{{$singularName}}", [$controller, 'update'])->name($name.'.update');
+        in_array('destroy', $routes) and Route::delete("{$name}/{{$singularName}}", [$controller, 'destroy'])->name($name.'.destroy');
+
+        return $this;
+    }
 }
