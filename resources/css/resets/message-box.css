@@ -1,0 +1,22 @@
+.el-message-box {
+    padding-bottom: 0;
+}
+
+.el-message-box__header{
+    padding: 20px;
+    border-bottom: solid #EBEEF5 1px;
+}
+
+.el-message-box__headerbtn{
+    top: 18px;
+    right: 20px;
+}
+
+.el-message-box__content{
+    padding: 20px;
+}
+
+.el-message-box__btns{
+    padding: 12px 20px;
+    border-top: solid #EBEEF5 1px;
+}

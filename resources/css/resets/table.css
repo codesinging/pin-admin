@@ -1,0 +1,45 @@
+.el-table--medium .cell {
+    line-height: 30px;
+    min-height: 30px;
+}
+
+.el-table--medium td,
+.el-table--medium th {
+    padding: 8px 0;
+}
+
+.el-table__header th {
+    background-color: #f7fafc;
+}
+
+.el-table-column--selection .cell {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.el-input-number--mini {
+    width: 108px;
+}
+
+.el-input--mini .el-loading-spinner,
+.el-input-number--mini .el-loading-spinner {
+    top: 0;
+    margin-top: 0;
+}
+
+.el-input--mini .el-loading-spinner .circular,
+.el-input-number--mini .el-loading-spinner .circular {
+    width: 24px;
+    height: 24px;
+}
+
+.el-switch .el-loading-spinner{
+    margin-top: -2px;
+    top: 0;
+    height: 20px;
+}
+
+.el-switch .el-loading-spinner .circular{
+    height: 18px;
+    width: 18px;
+}

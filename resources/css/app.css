@@ -6,4 +6,11 @@
 
 @import "~element-plus/lib/theme-chalk/index.css";
 
-@import "resets/menu.css";
+@import "./resets/common.css";
+@import "./resets/menu.css";
+@import "./resets/dialog.css";
+@import "./resets/form.css";
+@import "./resets/loading.css";
+@import "./resets/message-box.css";
+@import "./resets/popconfirm.css";
+@import "./resets/table.css";

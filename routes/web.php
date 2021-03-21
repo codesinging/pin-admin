@@ -21,5 +21,6 @@ Admin::routeGroup(function (){
 
     Route::get('/auth', [Controllers\AuthController::class, 'index'])->name('auth.index');
     Route::post('/auth/login', [Controllers\AuthController::class, 'login'])->name('auth.login');
+    Route::get('/auth/logout', [Controllers\AuthController::class, 'logout'])->name('auth.logout');
 
 }, false);

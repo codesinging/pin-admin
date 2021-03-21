@@ -196973,6 +196973,9 @@ url(./fonts/vendor/bootstrap-icons/bootstrap-icons.woff?cc252f2c65517314a587f62e
 .el-affix--fixed{
   position:fixed
 }
+button:focus{
+  outline: none !important;
+}
 .el-menu {
   border-right: none !important;
 }
@@ -196989,4 +196992,98 @@ url(./fonts/vendor/bootstrap-icons/bootstrap-icons.woff?cc252f2c65517314a587f62e
 .el-menu-item.is-active {
   background-color: #2d3748 !important;
 }
+.el-dialog__header {
+  padding: 20px;
+  border-bottom: solid #EBEEF5 1px;
+}
+
+.el-dialog__body {
+  padding: 20px;
+}
+
+.el-dialog__footer {
+  padding: 16px 20px;
+  border-top: solid #EBEEF5 1px;
+}
+.el-input--medium .el-input__inner{
+  padding: 0 10px;
+}
+.el-loading-mask{
+  background-color: rgba(255,255,255,.6);
+}
+
+.el-loading-spinner .circular{
+  display: inline-block;
+}
+.el-message-box {
+  padding-bottom: 0;
+}
+
+.el-message-box__header{
+  padding: 20px;
+  border-bottom: solid #EBEEF5 1px;
+}
+
+.el-message-box__headerbtn{
+  top: 18px;
+  right: 20px;
+}
+
+.el-message-box__content{
+  padding: 20px;
+}
+
+.el-message-box__btns{
+  padding: 12px 20px;
+  border-top: solid #EBEEF5 1px;
+}
+.el-popconfirm__main{
+  padding: 8px 0 12px;
+}
+.el-table--medium .cell {
+  line-height: 30px;
+  min-height: 30px;
+}
+
+.el-table--medium td,
+.el-table--medium th {
+  padding: 8px 0;
+}
+
+.el-table__header th {
+  background-color: #f7fafc;
+}
+
+.el-table-column--selection .cell {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.el-input-number--mini {
+  width: 108px;
+}
+
+.el-input--mini .el-loading-spinner,
+.el-input-number--mini .el-loading-spinner {
+  top: 0;
+  margin-top: 0;
+}
+
+.el-input--mini .el-loading-spinner .circular,
+.el-input-number--mini .el-loading-spinner .circular {
+  width: 24px;
+  height: 24px;
+}
+
+.el-switch .el-loading-spinner{
+  margin-top: -2px;
+  top: 0;
+  height: 20px;
+}
+
+.el-switch .el-loading-spinner .circular{
+  height: 18px;
+  width: 18px;
+}
+
 

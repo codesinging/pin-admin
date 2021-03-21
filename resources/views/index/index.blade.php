@@ -45,7 +45,7 @@
 
                         <el-tooltip content="刷新页面">
                             <div @click="onMainPageReload" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400 text-gray-600 hover:text-white cursor-pointer">
-                                <i class="bi-arrow-repeat text-lg"></i>
+                                <i class="bi-arrow-repeat text-xl"></i>
                             </div>
                         </el-tooltip>
                     </div>
@@ -181,12 +181,12 @@
                 },
 
                 onMainPageReload() {
-                    if (this.activeTab){
+                    if (this.activeTab) {
                         this.$refs[this.activeTab.uid].reload()
                     }
                 },
 
-                onTabRemove(tabUid){
+                onTabRemove(tabUid) {
                     this.removeTab(this.tabs.find(tab => tab.uid === tabUid))
                 },
 
@@ -200,7 +200,7 @@
 
                 userLogout() {
                     this.$http.get('auth/logout').then(() => {
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             location.reload()
                         }, 1000)
                     })
