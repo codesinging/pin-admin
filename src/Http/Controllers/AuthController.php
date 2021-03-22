@@ -8,7 +8,9 @@ namespace CodeSinging\PinAdmin\Http\Controllers;
 
 use CodeSinging\PinAdmin\Facades\Admin;
 use CodeSinging\PinAdmin\Http\Requests\AdminUserRequest;
+use CodeSinging\PinAdmin\Models\AdminUser;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -41,5 +43,25 @@ class AuthController extends Controller
     {
         Admin::auth()->logout();
         return $this->success('注销成功');
+    }
+
+    public function edit()
+    {
+        return $this->adminView('auth.edit');
+    }
+
+    public function update(AdminUserRequest $request): JsonResponse
+    {
+        $adminUser = AdminUser::find(Admin::auth()->id());
+
+        $request->validate([
+            'name' => [Rule::unique('admin_users')->ignore($adminUser)],
+        ], [
+            'name.unique' => '用户名称已经存在',
+        ]);
+
+        $result = $adminUser->fill($request->only('name', 'password'))->save();
+
+        return $result ? $this->success('修改成功') : $this->error('修改失败');
     }
 }

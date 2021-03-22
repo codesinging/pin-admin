@@ -68,7 +68,7 @@
                 </el-form-item>
 
                 <el-form-item prop="name" label="名称">
-                    <el-input v-model="formData.name" placeholder="用户名称"></el-input>
+                    <el-input v-model="formData.name" placeholder="名称"></el-input>
                 </el-form-item>
 
                 <el-form-item prop="url" label="地址">

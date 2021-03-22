@@ -131,13 +131,25 @@
                     this.addTab(this.toTab(this.activeMenu))
                 },
 
+                makeTab(name, url){
+                    return {
+                        name,
+                        url,
+                        uid: 'l' + md5(name + '|' + url)
+                    }
+                },
+
+                openTab(name, url){
+                    this.addTab(this.makeTab(name, url))
+                },
+
                 toTab(menu) {
                     return {
                         mid: menu.id,
                         name: menu.name,
                         url: menu.url,
                         is_home: menu.is_home,
-                        uid: 'u' + md5(menu.name + '|' + menu.url)
+                        uid: 'm' + md5(menu.name + '|' + menu.url)
                     }
                 },
 
@@ -192,10 +204,17 @@
 
                 onUserCommand(command) {
                     switch (command) {
+                        case 'edit':
+                            this.editUser()
+                            break
                         case 'logout':
                             this.userLogout()
                             break
                     }
+                },
+
+                editUser(){
+                    this.openTab('编辑信息', 'auth/edit')
                 },
 
                 userLogout() {
@@ -210,6 +229,7 @@
                 this.activeMenu = this.menus.find(menu => menu.is_home)
                 this.openedMenuIds = this.menus.filter(menu => menu.is_opened).map(menu => menu.id.toString())
                 this.addTab(this.toTab(this.activeMenu))
+                admin.openTab = this.openTab
             },
             watch: {
                 activeTabUid(tabUid) {

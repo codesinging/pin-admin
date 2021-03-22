@@ -9,14 +9,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminUsersTable extends Migration
+class CreateAdminMenusTable extends Migration
 {
     /**
      * Table name.
      *
      * @var string
      */
-    protected $table = 'admin_users';
+    protected $table = 'admin_menus';
 
     /**
      * Run the migrations.

@@ -63,7 +63,7 @@ axios.interceptors.response.use(
     error => {
         state.setFalse(LOADING)
         if (error.config['label']) {
-            state.setFalse(error.config.lang)
+            state.setFalse(error.config['label'])
         }
 
         if (error.config['showMessage']) {

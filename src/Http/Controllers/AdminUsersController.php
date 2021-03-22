@@ -28,11 +28,12 @@ class AdminUsersController extends Controller
     {
         $request->validate([
             'mobile' => ['unique:admin_users'],
-            'name' => ['required'],
+            'name' => ['required', 'unique:admin_users'],
             'password' => ['required'],
         ], [
             'mobile.unique' => '手机号码已经存在',
             'name.required' => '用户名称不能为空',
+            'name.unique' => '用户名称已经存在',
             'password.required' => '登录密码不能为空',
         ]);
 
@@ -44,9 +45,11 @@ class AdminUsersController extends Controller
     public function update(AdminUser $adminUser, AdminUserRequest $request): JsonResponse
     {
         $request->validate([
-            'mobile' => [Rule::unique('admin_users')->ignore($adminUser)]
+            'mobile' => [Rule::unique('admin_users')->ignore($adminUser)],
+            'name' => [Rule::unique('admin_users')->ignore($adminUser)],
         ], [
             'mobile.unique' => '手机号码已经存在',
+            'name.unique' => '用户名称已经存在',
         ]);
 
         $result = $adminUser->fill($request->all())->save();

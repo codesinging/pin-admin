@@ -12,10 +12,15 @@ class AdminUser extends AuthModel
         'mobile',
         'name',
         'password',
+        'status',
     ];
 
     protected $hidden = [
         'password',
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
     ];
 
     public function setPasswordAttribute($value)

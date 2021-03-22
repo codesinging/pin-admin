@@ -13,7 +13,11 @@ Admin::routeGroup(function (){
     Route::get('/', [Controllers\IndexController::class, 'index'])->name('index.index');
     Route::get('/home', [Controllers\IndexController::class, 'home'])->name('index.home');
 
+    Route::get('/auth/edit', [Controllers\AuthController::class, 'edit'])->name('auth.edit');
+    Route::put('/auth/update', [Controllers\AuthController::class, 'update'])->name('auth.update');
+
     Admin::resourceRoutes('admin_menus', Controllers\AdminMenusController::class);
+    Admin::resourceRoutes('admin_users', Controllers\AdminUsersController::class);
 
 });
 

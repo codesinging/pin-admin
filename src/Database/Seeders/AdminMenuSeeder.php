@@ -35,7 +35,7 @@ class AdminMenuSeeder extends Seeder
         }
     }
 
-    protected function data(): array
+    private function data(): array
     {
         return [
             [
