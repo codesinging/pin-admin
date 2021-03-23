@@ -1,5 +1,11 @@
 @extends(admin_template('layouts.app'))
 
+@section('header')
+    <script>
+        self !== top && (top.location = self.location)
+    </script>
+@endsection
+
 @section('content')
     <div id="app" class="h-full">
         <el-container class="h-full">
@@ -131,7 +137,7 @@
                     this.addTab(this.toTab(this.activeMenu))
                 },
 
-                makeTab(name, url){
+                makeTab(name, url) {
                     return {
                         name,
                         url,
@@ -139,7 +145,7 @@
                     }
                 },
 
-                openTab(name, url){
+                openTab(name, url) {
                     this.addTab(this.makeTab(name, url))
                 },
 
@@ -213,7 +219,7 @@
                     }
                 },
 
-                editUser(){
+                editUser() {
                     this.openTab('编辑信息', 'auth/edit')
                 },
 
