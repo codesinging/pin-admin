@@ -11,7 +11,7 @@ use CodeSinging\PinAdmin\Console\Commands\InstallCommand;
 use CodeSinging\PinAdmin\Console\Commands\ListCommand;
 use CodeSinging\PinAdmin\Console\Commands\PublishCommand;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
-use CodeSinging\PinAdmin\Middleware\AdminAuthenticate;
+use CodeSinging\PinAdmin\Http\Middleware\AdminAuthenticate;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 

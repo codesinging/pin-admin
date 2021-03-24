@@ -4,7 +4,7 @@
  * Github: https://github.com/codesinging
  */
 
-namespace CodeSinging\PinAdmin\Middleware;
+namespace CodeSinging\PinAdmin\Http\Middleware;
 
 use CodeSinging\PinAdmin\Facades\Admin;
 use Illuminate\Auth\Middleware\Authenticate;
@@ -22,5 +22,6 @@ class AdminAuthenticate extends Authenticate
         if (!$request->expectsJson()) {
             return Admin::link('auth');
         }
+        return null;
     }
 }
