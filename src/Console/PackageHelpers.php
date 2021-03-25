@@ -23,6 +23,25 @@ trait PackageHelpers
             $packages[$key] = $callback(
                 array_key_exists($key, $packages) ? $packages[$key]:[], $key
             );
+
+            ksort($packages[$key]);
+
+            file_put_contents(
+                base_path('package.json'),
+                json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
+            );
         }
+    }
+
+    /**
+     * Add packages to the 'package.json'.
+     * @param array $packages
+     * @param bool $dev
+     */
+    protected function addNodePackages(array $packages, bool $dev = true): void
+    {
+        $this->updateNodePackages(function ($originPackages) use ($packages){
+            return $packages + $originPackages;
+        }, $dev);
     }
 }
