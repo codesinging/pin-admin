@@ -7,10 +7,19 @@
 namespace CodeSinging\PinAdmin\Tests\Foundation;
 
 use CodeSinging\PinAdmin\Foundation\Admin;
+use CodeSinging\PinAdmin\Tests\GetPackageProviders;
 use Orchestra\Testbench\TestCase;
 
 class AdminTest extends TestCase
 {
+    use GetPackageProviders;
+
+    public function testApp()
+    {
+        self::assertInstanceOf(Admin::class, Admin::app());
+        self::assertSame(Admin::app(), Admin::app());
+    }
+
     public function testVersion()
     {
         self::assertEquals(Admin::VERSION, (new Admin())->version());
@@ -45,13 +54,13 @@ class AdminTest extends TestCase
     public function testDirectory()
     {
         self::assertEquals(Admin::DIRECTORY, (new Admin())->directory());
-        self::assertEquals(Admin::DIRECTORY.DIRECTORY_SEPARATOR.'Models', (new Admin())->directory('Models'));
+        self::assertEquals(Admin::DIRECTORY . DIRECTORY_SEPARATOR . 'Models', (new Admin())->directory('Models'));
     }
 
     public function testPath()
     {
         self::assertEquals(app_path(Admin::DIRECTORY), (new Admin())->path());
-        self::assertEquals(app_path(Admin::DIRECTORY.DIRECTORY_SEPARATOR.'Models'), (new Admin())->path('Models'));
+        self::assertEquals(app_path(Admin::DIRECTORY . DIRECTORY_SEPARATOR . 'Models'), (new Admin())->path('Models'));
     }
 
     public function testGetNamespace()

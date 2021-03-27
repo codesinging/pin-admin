@@ -6,6 +6,7 @@
 
 namespace CodeSinging\PinAdmin\Console\Commands;
 
+use CodeSinging\PinAdmin\Console\FileHelpers;
 use CodeSinging\PinAdmin\Console\OutputHelpers;
 use CodeSinging\PinAdmin\Database\Seeders\AdminMenuSeeder;
 use CodeSinging\PinAdmin\Database\Seeders\AdminUserSeeder;
@@ -16,6 +17,7 @@ use Illuminate\Console\Command;
 class InstallCommand extends Command
 {
     use OutputHelpers;
+    use FileHelpers;
 
     /**
      * The name and signature of the console command.
@@ -53,6 +55,14 @@ class InstallCommand extends Command
         $this->publishResources();
         $this->migrateDatabase();
         $this->seedDatabase();
+    }
+
+    private function createDirectories(): void
+    {
+        $this->title('Creating directories...');
+
+        $this->makeDirectory(Admin::app()->path());
+        $this->makeDirectory(resource_path(Admin::app()->name()));
     }
 
     /**
