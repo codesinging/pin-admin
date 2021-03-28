@@ -35,7 +35,7 @@ class Admin
     /**
      * PinAdmin slogan.
      */
-    const SLOGAN = 'Rapidly build administration application based on Laravel';
+    const SLOGAN = 'Rapidly build administrative application based on Laravel';
 
     /**
      * PinAdmin name.
