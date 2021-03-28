@@ -52,11 +52,15 @@ class InstallCommand extends Command
      */
     public function handle()
     {
+        $this->createDirectories();
         $this->publishResources();
         $this->migrateDatabase();
         $this->seedDatabase();
     }
 
+    /**
+     * Create application directories.
+     */
     private function createDirectories(): void
     {
         $this->title('Creating directories...');
