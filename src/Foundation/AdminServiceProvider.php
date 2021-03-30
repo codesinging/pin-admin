@@ -102,7 +102,6 @@ class AdminServiceProvider extends ServiceProvider
             $this->publishes([
                 AdminFacade::packagePath('publishes/assets') => public_path('static/vendor/' . AdminFacade::name()),
                 AdminFacade::packagePath('publishes/images') => public_path('static/vendor/' . AdminFacade::name() . '/images'),
-
             ], AdminFacade::name() . '-asset');
         }
     }
