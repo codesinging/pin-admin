@@ -13,6 +13,7 @@ use CodeSinging\PinAdmin\Console\Commands\PublishCommand;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Http\Middleware\AdminAuthenticate;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider
@@ -97,13 +98,16 @@ class AdminServiceProvider extends ServiceProvider
     private function publishResources(): void
     {
         if ($this->app->runningInConsole()) {
+            if (!is_dir(resource_path(AdminFacade::name()))){
+                File::makeDirectory(resource_path(AdminFacade::name()));
+            }
             $this->publishes([AdminFacade::packagePath('publishes/config') => config_path()], AdminFacade::name() . '-config');
             $this->publishes([AdminFacade::packagePath('publishes/routes') => base_path('routes')], AdminFacade::name() . '-route');
             $this->publishes([
                 AdminFacade::packagePath('publishes/assets') => public_path('static/vendor/' . AdminFacade::name()),
                 AdminFacade::packagePath('publishes/images') => public_path('static/vendor/' . AdminFacade::name() . '/images'),
-                AdminFacade::packagePath('webpack.mix.js') => resource_path(AdminFacade::name(). '/'),
-                AdminFacade::packagePath('tailwind.config.js') => resource_path(AdminFacade::name(). '/'),
+                AdminFacade::packagePath('webpack.mix.js') => resource_path(AdminFacade::name(). '/webpack.mix.js'),
+                AdminFacade::packagePath('tailwind.config.js') => resource_path(AdminFacade::name(). '/tailwind.config.js'),
             ], AdminFacade::name() . '-asset');
         }
     }

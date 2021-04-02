@@ -23,10 +23,13 @@ class PublishCommandTest extends TestCase
         self::assertFileExists(base_path('routes/admin.php'));
         self::assertDirectoryExists(public_path('static/vendor/' . Admin::name()));
         self::assertDirectoryExists(public_path('static/vendor/' . Admin::name().'/images'));
+        self::assertFileExists(resource_path(Admin::name().'/webpack.mix.js'));
+        self::assertFileExists(resource_path(Admin::name().'/tailwind.config.js'));
 
         File::delete(config_path('admin.php'));
         File::delete(base_path('routes/admin.php'));
         File::deleteDirectory(public_path('static/vendor/'. Admin::name()));
+        File::deleteDirectory(resource_path(Admin::name()));
     }
 
     public function testPublishResources()
@@ -41,6 +44,9 @@ class PublishCommandTest extends TestCase
 
         $this->artisan('admin:publish asset');
         self::assertFileExists(public_path('static/vendor/'. Admin::name()));
+        self::assertFileExists(resource_path(Admin::name().'/webpack.mix.js'));
+        self::assertFileExists(resource_path(Admin::name().'/tailwind.config.js'));
         File::deleteDirectory(public_path('static/vendor/'. Admin::name()));
+        File::deleteDirectory(resource_path(Admin::name()));
     }
 }
