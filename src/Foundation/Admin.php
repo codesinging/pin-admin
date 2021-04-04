@@ -338,18 +338,33 @@ class Admin
      */
     public function routeGroup(Closure $closure, bool $auth = true): self
     {
-        $middleware = ['web'] + $this->config('middleware', []);
-        if ($auth) {
-            $middleware = array_merge($middleware, ['admin.auth:' . $this->guard()]);
-        }
+        AdminRoute::routeGroup($closure, $auth);
+        return $this;
+    }
 
-        Route::prefix($this->routePrefix())
-            ->name($this->name() . '.')
-            ->middleware($middleware)
-            ->group(function () use ($closure) {
-                call_user_func($closure);
-            });
+    /**
+     * Set authentication routes of the PinAdmin application.
+     *
+     * @param Closure $closure
+     *
+     * @return $this
+     */
+    public function authRouteGroup(Closure $closure): self
+    {
+        AdminRoute::routeGroup($closure, true);
+        return $this;
+    }
 
+    /**
+     * Set guest routes of the PinAdmin application.
+     *
+     * @param Closure $closure
+     *
+     * @return $this
+     */
+    public function guestRouteGroup(Closure $closure): self
+    {
+        AdminRoute::routeGroup($closure, false);
         return $this;
     }
 
@@ -364,13 +379,18 @@ class Admin
      */
     public function resourceRoutes(string $name, string $controller, array $routes = ['index', 'lists', 'store', 'update', 'destroy']): self
     {
-        $singularName = Str::singular($name);
-        in_array('index', $routes) and Route::get($name, [$controller, 'index'])->name($name . '.index');
-        in_array('lists', $routes) and Route::get($name . '/lists', [$controller, 'lists'])->name($name . '.lists');
-        in_array('store', $routes) and Route::post($name, [$controller, 'store'])->name($name . '.store');
-        in_array('update', $routes) and Route::put("{$name}/{{$singularName}}", [$controller, 'update'])->name($name . '.update');
-        in_array('destroy', $routes) and Route::delete("{$name}/{{$singularName}}", [$controller, 'destroy'])->name($name . '.destroy');
+        AdminRoute::resourceRoutes($name, $controller, $routes);
+        return $this;
+    }
 
+    /**
+     * The default routes of the PinAdmin application.
+     *
+     * @return $this
+     */
+    public function defaultRoutes(): self
+    {
+        AdminRoute::defaultRoutes();
         return $this;
     }
 }

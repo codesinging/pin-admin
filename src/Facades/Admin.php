@@ -43,7 +43,10 @@ use Illuminate\Support\HtmlString;
  * @method static Guard|StatefulGuard auth()
  * @method static Authenticatable|null user()
  * @method static AdminClass routeGroup(Closure $closure, bool $auth = true)
+ * @method static AdminClass authRouteGroup(Closure $closure)
+ * @method static AdminClass guestRouteGroup(Closure $closure)
  * @method static AdminClass resourceRoutes(string $name, string $controller, array $routes = ['index', 'lists', 'store', 'update', 'destroy'])
+ * @method static AdminClass defaultRoutes()
  *
  * @package CodeSinging\PinAdmin\Facades
  */
