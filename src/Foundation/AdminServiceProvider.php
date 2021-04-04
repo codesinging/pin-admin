@@ -104,10 +104,9 @@ class AdminServiceProvider extends ServiceProvider
             $this->publishes([AdminFacade::packagePath('config') => config_path()], AdminFacade::name() . '-config');
             $this->publishes([AdminFacade::packagePath('routes') => base_path('routes')], AdminFacade::name() . '-route');
             $this->publishes([
-                AdminFacade::packagePath('resources/assets') => public_path('static/vendor/' . AdminFacade::name()),
+                AdminFacade::packagePath('resources/dist') => public_path('static/vendor/' . AdminFacade::name()),
                 AdminFacade::packagePath('resources/images') => public_path('static/vendor/' . AdminFacade::name() . '/images'),
-                AdminFacade::packagePath('webpack.mix.js') => resource_path(AdminFacade::name(). '/webpack.mix.js'),
-                AdminFacade::packagePath('tailwind.config.js') => resource_path(AdminFacade::name(). '/tailwind.config.js'),
+                AdminFacade::packagePath('resources/assets') => resource_path(AdminFacade::name()),
             ], AdminFacade::name() . '-asset');
         }
     }
