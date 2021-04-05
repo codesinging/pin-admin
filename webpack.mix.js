@@ -1,6 +1,6 @@
 const mix = require('laravel-mix')
 
-mix.setPublicPath('publishes/dist')
+mix.setPublicPath('resources/dist')
     .setResourceRoot('./')
     .js('resources/assets/js/app.js', 'app.js')
     .vue()
