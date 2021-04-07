@@ -16,10 +16,11 @@ trait PackageHelpers
      */
     protected function updateNodePackages(callable $callback, bool $dev = true): void
     {
-        if (file_exists(base_path('package.json'))) {
+        $file = base_path('package.json');
+        if (file_exists($file)) {
             $key = $dev ? 'devDependencies' : 'dependencies';
 
-            $packages = json_decode(file_get_contents(base_path('package.json')), true);
+            $packages = json_decode(file_get_contents($file), true);
 
             $packages[$key] = $callback(
                 array_key_exists($key, $packages) ? $packages[$key] : [], $key
@@ -27,10 +28,14 @@ trait PackageHelpers
 
             ksort($packages[$key]);
 
-            file_put_contents(
-                base_path('package.json'),
+            if(file_put_contents(
+                $file,
                 json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL
-            );
+            )){
+                $this->info("Updated $key in file [{$file}]");
+            } else {
+                $this->warn("Updated node package error [{$file}]");
+            }
         }
     }
 
