@@ -14,6 +14,7 @@ use CodeSinging\PinAdmin\Database\Seeders\AdminUserSeeder;
 use CodeSinging\PinAdmin\Foundation\Admin;
 use CodeSinging\PinAdmin\Foundation\AdminServiceProvider;
 use Illuminate\Console\Command;
+use Mews\Captcha\CaptchaServiceProvider;
 
 class InstallCommand extends Command
 {
@@ -40,6 +41,7 @@ class InstallCommand extends Command
      */
     protected $publishProviders = [
         AdminServiceProvider::class,
+        CaptchaServiceProvider::class,
     ];
 
     /**

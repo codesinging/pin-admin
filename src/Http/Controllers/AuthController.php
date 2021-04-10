@@ -16,19 +16,27 @@ class AuthController extends Controller
 {
     public function index()
     {
-        return $this->adminView('auth.index');
+        $captchaSrc = captcha_src();
+        return $this->adminView('auth.index', compact('captchaSrc'));
     }
 
     public function login(AdminUserRequest $request): JsonResponse
     {
-        $request->validate(
-            [
+        $request->validate([
                 'password' => ['required'],
-            ],
-            [
+            ], [
                 'password.required' => '密码不能为空'
             ]
         );
+
+        if (Admin::config('captcha')){
+            $request->validate([
+                'captcha' => ['required', 'captcha'],
+            ], [
+                'captcha.required' => '验证码不能为空',
+                'captcha.captcha' => '验证码不正确',
+            ]);
+        }
 
         $credentials = $request->only('mobile', 'password');
 
