@@ -40,15 +40,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | The authentication configuration of the PinAdmin application
+    | The captcha switch for the PinAdmin application
     |--------------------------------------------------------------------------
     |
-    | All the configuration about authentication.
+    | Whether to enable the captcha when authenticating.
     */
 
-    'auth' => [
-        'captcha' => true,
-    ],
+    'captcha' => true,
 
     /*
     |--------------------------------------------------------------------------
