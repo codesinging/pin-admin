@@ -6,12 +6,14 @@
 
 namespace CodeSinging\PinAdmin\Viewless\Foundation;
 
-use Closure;
-use CodeSinging\PinAdmin\Support\CallClosure;
+use Illuminate\Support\Str;
 
 class Attribute extends Buildable
 {
-    use CallClosure;
+    /**
+     * The prefix for property.
+     */
+    const PREFIX = ':';
 
     /**
      * @var array All of the attribute items.
@@ -19,28 +21,31 @@ class Attribute extends Buildable
     protected $items = [];
 
     /**
-     * The value's placeholders to replace when build.
-     *
-     * @var array
-     */
-    protected $placeholders = [];
-
-    /**
      * Attribute constructor.
      *
-     * @param array|Attribute|Closure ...$attributes
+     * @param string|array|null $key
+     * @param mixed|null $value
      */
-    public function __construct(...$attributes)
+    public function __construct($key = null, $value = null)
     {
-        foreach ($attributes as $attribute) {
-            $this->set($attribute);
-        }
+        is_null($key) or $this->add($key, $value);
     }
 
     /**
-     * Set one or multiple properties.
+     * Add attribute items.
      *
-     * @param string|array|Attribute|Closure|null $key
+     * @param string|array|null $key
+     * @param mixed|null $value
+     */
+    public function add($key, $value = null)
+    {
+        $this->set($key, $value);
+    }
+
+    /**
+     * Set one or multiple attribute items.
+     *
+     * @param string|array|null $key
      * @param mixed $value
      *
      * @return $this
@@ -48,19 +53,11 @@ class Attribute extends Buildable
     public function set($key, $value = null): self
     {
         if (!empty($key)) {
-            if ($key instanceof Closure) {
-                $key = $this->callClosure($key, new self());
-            }
-
-            if ($key instanceof self) {
-                $key = $key->all();
-            }
-
             if (is_string($key)) {
                 $this->items[$key] = $value;
             } elseif (is_array($key)) {
                 foreach ($key as $k => $v) {
-                    if (is_int($k)) {
+                    if (is_int($k) && is_string($v)){
                         $this->items[$v] = null;
                     } else {
                         $this->items[$k] = $v;
@@ -142,33 +139,59 @@ class Attribute extends Buildable
     }
 
     /**
-     * Set placeholders.
+     * Parse an attribute item to string.
      *
-     * @param array $placeholders
+     * @param string|null $key
+     * @param mixed|null $value
+     * @param bool $isProperty
      *
-     * @return $this
+     * @return string
      */
-    public function placeholder(array $placeholders): self
+    public function parse(string $key = null, $value = null, bool $isProperty = false): string
     {
-        $this->placeholders = array_merge($this->placeholders, $placeholders);
-        return $this;
-    }
-
-    /**
-     * Replace placeholders of the value.
-     *
-     * @param $value
-     *
-     * @return mixed
-     */
-    protected function parsePlaceholder($value)
-    {
-        if (is_string($value)) {
-            foreach ($this->placeholders as $key => $placeholder) {
-                $value = str_replace($key, $placeholder, $value);
-            }
+        if (empty($key)) {
+            return '';
         }
-        return $value;
+
+        if (Str::startsWith($key, self::PREFIX)){
+            $key = substr($key, 1);
+            $isProperty = true;
+        }
+
+        if (is_string($value)) {
+            if (Str::startsWith($value, self::PREFIX)) {
+                $value = substr($value, 1);
+                $isProperty = true;
+            } elseif (Str::startsWith($value, "\\" . self::PREFIX)) {
+                $value = substr($value, 1);
+            }
+        } elseif ($value === true) {
+            $value = 'true';
+            $isProperty = true;
+        } elseif ($value === false) {
+            $value = 'false';
+            $isProperty = true;
+        } elseif (is_int($value) || is_float($value) || is_double($value)) {
+            $value = (string)$value;
+            $isProperty = true;
+        } elseif (is_null($value) && $isProperty) {
+            $value = 'true';
+        } elseif (is_array($value)) {
+            $value = json_encode($value);
+            $isProperty = true;
+        }
+
+        $key = Str::kebab($key);
+
+        if (is_null($value)) {
+            return sprintf('%s', $key);
+        }
+
+        if ($isProperty) {
+            return sprintf(':%s="%s"', $key, $value);
+        } else {
+            return sprintf('%s="%s"', $key, $value);
+        }
     }
 
     /**
@@ -178,8 +201,7 @@ class Attribute extends Buildable
     {
         $attributes = [];
         foreach ($this->items as $key => $value) {
-            is_string($value) && $value = $this->parsePlaceholder($value);
-            $attributes[] = is_null($value) ? $key : sprintf('%s="%s"', $key, $value);
+            $attributes[] = $this->parse($key, $value);
         }
         return implode(' ', $attributes);
     }

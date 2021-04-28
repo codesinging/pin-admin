@@ -7,13 +7,10 @@
 namespace CodeSinging\PinAdmin\Viewless\Foundation;
 
 use Closure;
-use CodeSinging\PinAdmin\Support\CallClosure;
 use Illuminate\Support\Arr;
 
 class Content extends Buildable
 {
-    use CallClosure;
-
     /**
      * @var array All of the content items.
      */
@@ -64,7 +61,7 @@ class Content extends Buildable
         }
 
         if ($content instanceof Closure) {
-            $content = $this->callClosure($content, new self());
+            $content = call_closure($content, new self());
         }
 
         return (string)$content;
@@ -124,17 +121,6 @@ class Content extends Buildable
     public function interpolation(string $content): self
     {
         $this->add(sprintf('{{ %s }}', $content));
-        return $this;
-    }
-
-    /**
-     * Add a blank content item.
-     *
-     * @return $this
-     */
-    public function addBlank(): self
-    {
-        $this->add('');
         return $this;
     }
 

@@ -11,60 +11,34 @@ use Orchestra\Testbench\TestCase;
 
 class AttributeTest extends TestCase
 {
-    public function testConstruct()
+    public function testSet()
     {
-        self::assertEquals('disabled title="Title"', (new Attribute(["disabled", "title" => "Title"]))->build());
-        self::assertEquals('disabled title="Title"', (new Attribute(["disabled"], ["title" => "Title"]))->build());
-    }
-
-    public function testSetWhenKeyIsNull()
-    {
-        self::assertEquals("", (new Attribute())->set(null)->build());
-    }
-
-    public function testSetWhenKeyIsString()
-    {
-        self::assertEquals('title="Title"', (new Attribute())->set("title", "Title"));
-        self::assertEquals('disabled', (new Attribute())->set('disabled'));
-    }
-
-    public function testSetWhenKeyIsArray()
-    {
-        self::assertEquals('title="Title"', (new Attribute())->set(["title" => "Title"]));
-        self::assertEquals('disabled', (new Attribute())->set(['disabled']));
-    }
-
-    public function testSetWhenKeyIsAttribute()
-    {
-        self::assertEquals('title="Title"', (new Attribute())->set(new Attribute(["title" => "Title"])));
-    }
-
-    public function testSetWhenKeyIsClosure()
-    {
-        self::assertEquals('title="Title"', (new Attribute())->set(function () {
-            return ["title" => "Title"];
-        }));
-        self::assertEquals('title="Title"', (new Attribute())->set(function (Attribute $attribute) {
-            return $attribute->set(["title" => "Title"]);
-        }));
-        self::assertEquals('title="Title"', (new Attribute())->set(function (Attribute $attribute) {
-            $attribute->set(["title" => "Title"]);
-        }));
+        self::assertEquals([], (new Attribute())->all());
+        self::assertEquals([], (new Attribute())->set(null)->all());
+        self::assertEquals([], (new Attribute())->set('')->all());
+        self::assertEquals(['id' => 1], (new Attribute('id', 1))->all());
+        self::assertEquals(['id' => 1], (new Attribute(['id' => 1]))->all());
+        self::assertEquals(['id' => 1], (new Attribute())->set('id', 1)->all());
+        self::assertEquals(['id' => 1], (new Attribute())->set(['id' => 1])->all());
+        self::assertEquals(['id' => 1, 'name' => 'pin'], (new Attribute('id', 1))->set('name', 'pin')->all());
+        self::assertEquals(['id' => 1, 'name' => 'pin'], (new Attribute(['id' => 1]))->set('name', 'pin')->all());
+        self::assertEquals(['id' => 1, 'name' => 'pin'], (new Attribute())->set('id', 1)->set('name', 'pin')->all());
+        self::assertEquals(['id' => 1, 'name' => 'pin'], (new Attribute())->set(['id' => 1])->set('name', 'pin')->all());
+        self::assertEquals(['disabled' => null], (new Attribute(['disabled']))->all());
     }
 
     public function testGet()
     {
-        self::assertEquals('Title', (new Attribute(['title' => 'Title']))->get('title'));
-        self::assertEquals(null, (new Attribute(['title' => 'Title']))->get('name'));
-        self::assertEquals('Name', (new Attribute(['title' => 'Title']))->get('name', 'Name'));
+        self::assertEquals(1, (new Attribute('id', 1))->get('id'));
+        self::assertEquals(null, (new Attribute())->get('name'));
+        self::assertEquals('pin', (new Attribute())->get('name', 'pin'));
     }
 
     public function testHas()
     {
-        $attribute = new Attribute();
-        self::assertFalse($attribute->has("title"));
-        $attribute->set("title", "Title");
-        self::assertTrue($attribute->has("title"));
+        self::assertFalse((new Attribute())->has('name'));
+        self::assertFalse((new Attribute('id', 1))->has('name'));
+        self::assertTrue((new Attribute('id', 1))->has('id'));
     }
 
     public function testRemove()
@@ -90,29 +64,43 @@ class AttributeTest extends TestCase
 
     public function testAll()
     {
-        self::assertArrayHasKey("id", (new Attribute(["id" => 1]))->all());
+        self::assertEquals(["id" => 1], (new Attribute(["id" => 1]))->all());
     }
 
-    public function testPlaceholder()
+    public function testParse()
     {
-        $placeholders = [
-            '@.' => 'properties.id.',
-            '#.' => 'configs.id.',
-            '\@\.' => '@.',
-            '\#\.' => '#.',
-        ];
+        self::assertEquals('', (new Attribute())->parse(null));
+        self::assertEquals('', (new Attribute())->parse(''));
 
-        self::assertEquals(':visible="visible"', (new Attribute([':visible' => 'visible']))->placeholder($placeholders)->build());
-        self::assertEquals(':visible="properties.id.visible"', (new Attribute([':visible' => '@.visible']))->placeholder($placeholders)->build());
-        self::assertEquals(':visible="configs.id.visible"', (new Attribute([':visible' => '#.visible']))->placeholder($placeholders)->build());
-        self::assertEquals(':visible="@."', (new Attribute([':visible' => '\@\.']))->placeholder($placeholders)->build());
-        self::assertEquals(':visible="#."', (new Attribute([':visible' => '\#\.']))->placeholder($placeholders)->build());
+        self::assertEquals(':name="pin"', (new Attribute())->parse(':name', 'pin'));
+        self::assertEquals(':name="pin"', (new Attribute())->parse(':name', ':pin'));
+
+        self::assertEquals('name="pin"', (new Attribute())->parse('name', 'pin'));
+        self::assertEquals(':name="pin"', (new Attribute())->parse('name', ':pin'));
+
+        self::assertEquals('name=":pin"', (new Attribute())->parse('name', '\:pin'));
+
+        self::assertEquals(':disabled="true"', (new Attribute())->parse('disabled', true));
+        self::assertEquals(':disabled="false"', (new Attribute())->parse('disabled', false));
+        self::assertEquals(':disabled="true"', (new Attribute())->parse('disabled', null, true));
+
+        self::assertEquals('id="1"', (new Attribute())->parse('id', '1'));
+        self::assertEquals(':id="1"', (new Attribute())->parse('id', 1));
+        self::assertEquals(':id="1.1"', (new Attribute())->parse('id', 1.1));
+
+        self::assertEquals(':class="["margin"]"', (new Attribute())->parse("class", ['margin']));
+        self::assertEquals(':data="{"title":"Title"}"', (new Attribute())->parse("data", ['title' => "Title"]));
+
+        self::assertEquals('disabled', (new Attribute())->parse('disabled'));
+
+        self::assertEquals('first-name="pin"', (new Attribute())->parse('firstName', 'pin'));
     }
 
     public function testBuild()
     {
+        self::assertEquals('', (new Attribute()));
         self::assertEquals("id=\"1\"", (new Attribute(["id" => "1"])));
-        self::assertEquals("disabled", new Attribute(["disabled"]));
+        self::assertEquals("disabled", (new Attribute(["disabled"]))->build());
         self::assertEquals("disabled readonly", new Attribute(["disabled", "readonly"]));
         self::assertEquals('disabled title="Title"', new Attribute(["disabled", "title" => 'Title']));
     }

@@ -13,11 +13,21 @@ class BuildableTest extends TestCase
 {
     public function testBuild()
     {
-        self::assertEquals(BuildableBuild::VALUE, (new BuildableBuild())->build());
+        self::assertEquals(BuildExample::VALUE, (new BuildExample())->build());
     }
 
     public function testToString()
     {
-        self::assertEquals(BuildableBuild::VALUE, new BuildableBuild());
+        self::assertEquals(BuildExample::VALUE, new BuildExample());
+    }
+}
+
+class BuildExample extends Buildable
+{
+    const VALUE = 'value';
+
+    public function build(): string
+    {
+        return self::VALUE;
     }
 }

@@ -6,6 +6,7 @@
 
 namespace CodeSinging\PinAdmin\Tests\Viewless\Foundation;
 
+use CodeSinging\PinAdmin\Viewless\Foundation\Buildable;
 use CodeSinging\PinAdmin\Viewless\Foundation\Content;
 use Orchestra\Testbench\TestCase;
 
@@ -112,11 +113,6 @@ class ContentTest extends TestCase
         self::assertEquals('name:{{ name }}', (new Content('name:'))->interpolation('name'));
     }
 
-    public function testAddBlank()
-    {
-        self::assertEquals(['a', ''], (new Content('a'))->addBlank()->all());
-    }
-
     public function testClear()
     {
         self::assertTrue((new Content('a'))->clear()->isEmpty());
@@ -150,5 +146,23 @@ class ContentTest extends TestCase
     public function testBuild()
     {
         self::assertEquals('ab', (new Content('a', 'b'))->build());
+    }
+}
+
+class ContentAddBuildable extends Buildable
+{
+    protected $content;
+
+    public function __construct(string $content = null)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function build(): string
+    {
+        return $this->content;
     }
 }
