@@ -6,6 +6,8 @@
 
 use CodeSinging\PinAdmin\Foundation\Admin;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\HtmlString;
 
 if (!function_exists('admin')) {
@@ -73,6 +75,22 @@ if (!function_exists('admin_template')){
     function admin_template(string $path): string
     {
         return admin()->template($path);
+    }
+}
+
+if (!function_exists('admin_view')){
+    /**
+     * Get the view for PinAdmin.
+     *
+     * @param string $view
+     * @param array $data
+     * @param array $mergeData
+     *
+     * @return Application|Factory|View
+     */
+    function admin_view(string $view, $data = [], $mergeData = [])
+    {
+        return view(admin()->template($view), $data, $mergeData);
     }
 }
 
