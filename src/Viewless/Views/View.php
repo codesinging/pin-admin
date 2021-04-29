@@ -6,6 +6,7 @@
 
 namespace CodeSinging\PinAdmin\Viewless\Views;
 
+use CodeSinging\PinAdmin\Facades\Admin;
 use CodeSinging\PinAdmin\Viewless\Foundation\Content;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -63,8 +64,13 @@ abstract class View
 
         $contents = $this->content->build();
 
+        $baseData = [
+            'baseUrl' => Admin::link(),
+        ];
+
         return admin_view($this->template, [
             'data' => $data,
+            'baseData' => $baseData,
             'contents' => $contents,
         ]);
     }

@@ -8,14 +8,19 @@ namespace CodeSinging\PinAdmin\Http\Controllers;
 
 use CodeSinging\PinAdmin\Http\Requests\AdminUserRequest;
 use CodeSinging\PinAdmin\Models\AdminUser;
+use CodeSinging\PinAdmin\Viewless\Views\ModelView;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 
 class AdminUsersController extends Controller
 {
-    public function index()
+    public function index(ModelView $view)
     {
-        return $this->adminView('admin_users.index');
+//        return $this->adminView('admin_users.index');
+        $view->table->columnId();
+        $view->table->columnCreatedAt();
+        $view->table->columnUpdatedAt();
+        return $view->render();
     }
 
     public function lists(AdminUser $adminUser): JsonResponse
