@@ -28,7 +28,7 @@ trait Lists
             $builder = $query($builder);
         }
 
-        $page = intval(request('page', 0));
+        $page = intval(request('page', 1));
         $size = intval(request('size', 0));
         $pageable = request()->boolean('pageable');
 

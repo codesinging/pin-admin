@@ -222,6 +222,19 @@ trait Directive
     }
 
     /**
+     * Add a `v-loading` directive.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function vLoading(string $value): self
+    {
+        $this->set(['v-loading' => $value]);
+        return $this;
+    }
+
+    /**
      * Add ref attribute.
      *
      * @param string $name

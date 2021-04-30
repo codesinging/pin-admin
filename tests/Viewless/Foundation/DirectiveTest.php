@@ -95,6 +95,11 @@ class DirectiveTest extends TestCase
         self::assertEquals("<builder v-once></builder>", (new Builder())->vOnce());
     }
 
+    public function testVLoading()
+    {
+        self::assertEquals("<builder v-loading=\"state\"></builder>", (new Builder())->vLoading('state'));
+    }
+
     public function testRef()
     {
         self::assertEquals("<builder ref=\"table\"></builder>", (new Builder())->ref('table')->build());

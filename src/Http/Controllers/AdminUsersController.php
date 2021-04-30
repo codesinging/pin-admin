@@ -8,6 +8,7 @@ namespace CodeSinging\PinAdmin\Http\Controllers;
 
 use CodeSinging\PinAdmin\Http\Requests\AdminUserRequest;
 use CodeSinging\PinAdmin\Models\AdminUser;
+use CodeSinging\PinAdmin\Viewless\Components\Table;
 use CodeSinging\PinAdmin\Viewless\Views\ModelView;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
@@ -17,9 +18,15 @@ class AdminUsersController extends Controller
     public function index(ModelView $view)
     {
 //        return $this->adminView('admin_users.index');
-        $view->table->columnId();
-        $view->table->columnCreatedAt();
-        $view->table->columnUpdatedAt();
+
+        $view->table(function (Table $table){
+            $table->columnId();
+            $table->column('name', '名称');
+            $table->column('mobile', '手机号码')->align_center();
+            $table->columnCreatedAt()->align_center();
+            $table->columnUpdatedAt()->align_center();
+        });
+
         return $view->render();
     }
 
