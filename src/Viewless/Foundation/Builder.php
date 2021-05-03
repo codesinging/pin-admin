@@ -242,6 +242,7 @@ class Builder extends Buildable
 
     /**
      * Get all the attributes.
+     *
      * @return array
      */
     public function attributes(): array
@@ -368,6 +369,9 @@ class Builder extends Buildable
                 $handler = $arguments[0] ?? $event;
             }
             $this->vOn($event, $handler);
+        } elseif (preg_match('/slot[A-Z][a-zA-Z]+/', $name)) {
+            $slotName = lcfirst(substr($name, 4));
+            $this->slot($slotName, $arguments[0] ?? null, $arguments[1] ?? null);
         } else {
             $this->set($name, $arguments[0] ?? true);
         }

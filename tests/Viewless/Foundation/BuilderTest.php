@@ -155,6 +155,8 @@ class BuilderTest extends TestCase
         self::assertEquals('<div @click="click"></div>', (new TestCall('div'))->onClick()->build());
         self::assertEquals('<div @select="onSelect"></div>', (new TestCall('div'))->onSelect('onSelect'));
         self::assertEquals('<div @page-change="onPageChange(1, \'lists.size\')"></div>', (new TestCall('div'))->onPageChange('onPageChange', 1, "'lists.size'")->build());
+
+        self::assertEquals('<div><template #header>Header</template></div>', (new TestCall('div'))->slotHeader('Header'));
     }
 
     public function testInitialize()
@@ -221,6 +223,8 @@ class TestFullTag extends Builder
  * @method $this onClick()
  * @method $this onSelect(string $handler)
  * @method $this onPageChange(string $handler, int $page, string $size)
+ *
+ * @method $this slotHeader($contents)
  *
  * @package CodeSinging\PinAdminView\Tests\Foundation
  */
