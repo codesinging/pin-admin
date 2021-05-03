@@ -30,7 +30,6 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Component;
  * @method $this max(int $max)
  * @method $this min(int $min)
  * @method $this step(int $step)
- * @method $this resize(string $resize)
  * @method $this autofocus(bool $autofocus = true)
  * @method $this form(string $form)
  * @method $this label(string $label)
@@ -43,10 +42,6 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Component;
  *
  * @method $this autocomplete_on()
  * @method $this autocomplete_off()
- *
- * @method $this resize_both()
- * @method $this resize_horizontal()
- * @method $this resize_vertical()
  *
  * @method $this slotPrefix($contents, string $props = null)
  * @method $this slotSuffix($contents, string $props = null)
