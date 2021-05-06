@@ -11,6 +11,7 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Builder;
 use CodeSinging\PinAdmin\Viewless\Foundation\Content;
 use CodeSinging\PinAdmin\Viewless\Foundation\Css;
 use CodeSinging\PinAdmin\Viewless\Foundation\Style;
+use Illuminate\Config\Repository;
 use Orchestra\Testbench\TestCase;
 
 class BuilderTest extends TestCase
@@ -138,6 +139,19 @@ class BuilderTest extends TestCase
         self::assertTrue((new Builder())->isBuildable());
     }
 
+    public function testConfig()
+    {
+        self::assertInstanceOf(Repository::class, (new Builder())->config());
+
+        self::assertEquals(1, (new Builder())->config(['id' => 1])->config('id'));
+        self::assertEquals(2, (new Builder())->config(['id' => 1])->config('uid', 2));
+    }
+
+    public function testConfigs()
+    {
+        self::assertEquals(['id' => 1], (new Builder())->config(['id' => 1])->configs());
+    }
+
     public function testCall()
     {
         self::assertEquals('small', (new TestCall())->size('small')->get('size'));
@@ -151,6 +165,7 @@ class BuilderTest extends TestCase
 
         self::assertEquals('left', (new TestCall())->headerAlign_left()->get('headerAlign'));
         self::assertEquals('<div header-align="left"></div>', (new TestCall('div'))->headerAlign_left()->build());
+        self::assertEquals('<div justify="space-around"></div>', (new TestCall('div'))->justify_spaceAround()->build());
 
         self::assertEquals('<div @click="click"></div>', (new TestCall('div'))->onClick()->build());
         self::assertEquals('<div @select="onSelect"></div>', (new TestCall('div'))->onSelect('onSelect'));
@@ -220,6 +235,7 @@ class TestFullTag extends Builder
  * @method $this type_primary()
  * @method $this type_success()
  * @method $this headerAlign_left()
+ * @method $this justify_spaceAround()
  * @method $this onClick()
  * @method $this onSelect(string $handler)
  * @method $this onPageChange(string $handler, int $page, string $size)

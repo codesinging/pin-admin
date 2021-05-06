@@ -7,6 +7,7 @@
 namespace CodeSinging\PinAdmin\Viewless\Foundation;
 
 use Closure;
+use Illuminate\Config\Repository;
 use Illuminate\Support\Str;
 
 class Builder extends Buildable
@@ -84,6 +85,13 @@ class Builder extends Buildable
     protected $buildable = true;
 
     /**
+     * The builder's configuration repository.
+     *
+     * @var Repository
+     */
+    public static $config;
+
+    /**
      * Builder constructor.
      *
      * @param string|array|null $tag
@@ -115,6 +123,8 @@ class Builder extends Buildable
         $this->attribute->set($attributes);
 
         $this->content = new Content($content);
+
+        self::$config = new Repository();
 
         $this->initialize();
     }
@@ -347,6 +357,42 @@ class Builder extends Buildable
     }
 
     /**
+     * Set/get configuration value or get the configuration repository instance.
+     *
+     * @param string|array|null $key
+     * @param mixed|null $value
+     *
+     * @return $this|Repository|mixed
+     */
+    public function config($key = null, $value = null)
+    {
+        if (is_null($key)) {
+            return self::$config;
+        }
+
+        if (is_string($key)) {
+            return self::$config->get($key, $value);
+        }
+
+        if (is_array($key)) {
+            self::$config->set($key);
+            return $this;
+        }
+
+        return self::$config;
+    }
+
+    /**
+     * Get all builder configuration.
+     *
+     * @return array
+     */
+    public static function configs(): array
+    {
+        return self::$config->all();
+    }
+
+    /**
      * The methods to set properties.
      *
      * @param string $name
@@ -357,7 +403,7 @@ class Builder extends Buildable
     public function __call(string $name, array $arguments): self
     {
         if (Str::contains($name, '_')) {
-            $this->set(Str::before($name, '_'), Str::after($name, '_'));
+            $this->set(Str::before($name, '_'), Str::kebab(Str::after($name, '_')));
         } elseif (preg_match('/on[A-Z][a-zA-Z]+/', $name)) {
             $event = lcfirst(substr($name, 2));
             if (count($arguments) > 1) {

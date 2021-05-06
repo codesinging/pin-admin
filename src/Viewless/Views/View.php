@@ -9,6 +9,7 @@ namespace CodeSinging\PinAdmin\Viewless\Views;
 use CodeSinging\PinAdmin\Facades\Admin;
 use CodeSinging\PinAdmin\Http\Support\ControllerParser;
 use CodeSinging\PinAdmin\Viewless\Foundation\Content;
+use Illuminate\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 
@@ -31,12 +32,60 @@ abstract class View
     protected $content;
 
     /**
+     * @var Repository
+     */
+    protected $config;
+
+    /**
+     * @var array
+     */
+    protected $configs = [];
+
+    /**
      * View constructor.
      */
     public function __construct()
     {
         $this->content = Content::make()->linebreak();
+        $this->config = new Repository($this->configs);
+
         $this->initialize();
+    }
+
+    /**
+     * Set/get configuration value or get the configuration repository instance.
+     *
+     * @param string|array|null $key
+     * @param mixed|null $value
+     *
+     * @return $this|Repository|mixed
+     */
+    public function config($key = null, $value = null)
+    {
+        if (is_null($key)) {
+            return $this->config;
+        }
+
+        if (is_string($key)) {
+            return $this->config->get($key, $value);
+        }
+
+        if (is_array($key)) {
+            $this->config->set($key);
+            return $this;
+        }
+
+        return $this->config;
+    }
+
+    /**
+     * Get all configuration.
+     *
+     * @return array
+     */
+    public function configs(): array
+    {
+        return $this->config->all();
     }
 
     /**
@@ -51,14 +100,6 @@ abstract class View
      */
     protected function ready(): void
     {
-    }
-
-    /**
-     * @return array
-     */
-    protected function data(): array
-    {
-        return [];
     }
 
     /**
@@ -80,11 +121,10 @@ abstract class View
             'controllerName' => $this->controllerName(),
         ];
 
-        $baseData = array_merge($this->data(), $baseData);
-
         return admin_view($this->template, [
             'data' => $data,
             'baseData' => $baseData,
+            'configs' => $this->configs(),
             'contents' => $contents,
         ]);
     }

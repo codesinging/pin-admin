@@ -42,17 +42,21 @@ class Dialog extends Component
     /**
      * Dialog constructor.
      *
+     * @param string|array|null $title
      * @param array|string|null $attributes
      * @param string|array|Buildable|Closure|null $content
      * @param bool|null $linebreak
      */
-    public function __construct($attributes = null, $content = null, bool $linebreak = null)
+    public function __construct($title = null, array $attributes = null, $content = null, bool $linebreak = null)
     {
+        is_array($title) and [$attributes, $title] = [$title, null];
         parent::__construct($attributes, $content, $linebreak);
+        is_null($title) or $this->set('title', $title);
     }
 
     /**
      * Make a Dialog instance.
+     *
      * @param array|string|self|Closure|null $attributes
      * @param string|array|Buildable|Closure|null $content
      * @param bool|null $linebreak
@@ -61,7 +65,7 @@ class Dialog extends Component
      */
     public static function make($attributes = null, $content = null, bool $linebreak = null): self
     {
-        if ($attributes instanceof Closure){
+        if ($attributes instanceof Closure) {
             $attributes = call_closure($attributes, new static());
         }
 

@@ -8,6 +8,7 @@ namespace CodeSinging\PinAdmin\Http\Controllers;
 
 use CodeSinging\PinAdmin\Http\Requests\AdminUserRequest;
 use CodeSinging\PinAdmin\Models\AdminUser;
+use CodeSinging\PinAdmin\Viewless\Components\Form;
 use CodeSinging\PinAdmin\Viewless\Components\Table;
 use CodeSinging\PinAdmin\Viewless\Views\ModelView;
 use Illuminate\Http\JsonResponse;
@@ -25,6 +26,10 @@ class AdminUsersController extends Controller
             $table->column('mobile', '手机号码')->align_center();
             $table->columnCreatedAt()->align_center();
             $table->columnUpdatedAt()->align_center();
+        });
+
+        $view->form(function (Form $form){
+            $form->item('name')->input()->default('admin');
         });
 
         return $view->render();

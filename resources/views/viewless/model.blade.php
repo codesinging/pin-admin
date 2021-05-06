@@ -10,12 +10,15 @@
             data() {
                 return {
                     controller: @json($baseData['controllerName']),
-                    lists: @json($baseData['lists']),
+                    lists: @json($configs['lists']),
+                    data: @json($data),
+                    formData: @json($configs['formData']),
+                    dialog: @json($configs['dialog']),
                 }
             },
             methods: {
                 onAddButtonClick() {
-
+                    this.dialog.visible = true
                 },
                 onRefreshButtonClick() {
                     this.refreshLists()

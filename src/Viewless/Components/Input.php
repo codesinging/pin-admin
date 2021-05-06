@@ -79,7 +79,7 @@ class Input extends Component
      *
      * @return static
      */
-    public static function make($model = null, array $attributes = []): self
+    public static function make($model = null, array $attributes = null): self
     {
         if ($model instanceof Closure) {
             $model = call_closure($model, new static());
