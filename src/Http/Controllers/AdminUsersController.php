@@ -29,7 +29,7 @@ class AdminUsersController extends Controller
         });
 
         $view->form(function (Form $form){
-            $form->item('name')->input()->default('admin');
+            $form->item('name','用户名称')->input()->default('admin')->validate('required');
         });
 
         return $view->render();

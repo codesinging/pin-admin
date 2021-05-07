@@ -35,6 +35,9 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Component;
  * @method $this onClose(string $handler = null, ...$parameters)
  * @method $this onClosed(string $handler = null, ...$parameters)
  *
+ * @method $this slotTitle($contents, string $props = null)
+ * @method $this slotFooter($contents, string $props = null)
+ *
  * @package CodeSinging\PinAdmin\Viewless\Components
  */
 class Dialog extends Component
@@ -57,18 +60,19 @@ class Dialog extends Component
     /**
      * Make a Dialog instance.
      *
+     * @param string|array|null $title
      * @param array|string|self|Closure|null $attributes
      * @param string|array|Buildable|Closure|null $content
      * @param bool|null $linebreak
      *
      * @return static
      */
-    public static function make($attributes = null, $content = null, bool $linebreak = null): self
+    public static function make($title = null, $attributes = null, $content = null, bool $linebreak = null): self
     {
-        if ($attributes instanceof Closure) {
-            $attributes = call_closure($attributes, new static());
+        if ($title instanceof Closure) {
+            $title = call_closure($title, new static());
         }
 
-        return $attributes instanceof self ? $attributes : new static($attributes, $content, $linebreak);
+        return $title instanceof self ? $title : new static($title, $attributes, $content, $linebreak);
     }
 }

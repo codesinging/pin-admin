@@ -184,13 +184,13 @@ class Attribute extends Buildable
         $key = Str::kebab($key);
 
         if (is_null($value)) {
-            return sprintf('%s', $key);
+            return sprintf("%s", $key);
         }
 
         if ($isProperty) {
-            return sprintf(':%s="%s"', $key, $value);
+            return sprintf(":%s='%s'", $key, $value);
         } else {
-            return sprintf('%s="%s"', $key, $value);
+            return sprintf("%s='%s'", $key, $value);
         }
     }
 

@@ -174,6 +174,25 @@ class BuilderTest extends TestCase
         self::assertEquals('<div><template #header>Header</template></div>', (new TestCall('div'))->slotHeader('Header'));
     }
 
+    public function testCallStatic()
+    {
+        self::assertEquals('<div></div>', TestCallStatic::make('div'));
+
+        self::assertEquals('<div></div>', TestCallStatic::make(function (TestCallStatic $testCallStatic){
+            $testCallStatic->baseTag('div');
+        }));
+
+        self::assertEquals('<div></div>', TestCallStatic::make(function (TestCallStatic $testCallStatic){
+            return $testCallStatic->baseTag('div');
+        }));
+
+        self::assertEquals('<div></div>', TestCallStatic::make(function (){
+            return new Builder('div');
+        }));
+
+        self::assertEquals('<div></div>', TestCallStatic::make(new Builder('div')));
+    }
+
     public function testInitialize()
     {
         self::assertEquals('span', (new TestInitialize())->baseTag());
@@ -246,6 +265,18 @@ class TestFullTag extends Builder
  */
 class TestCall extends Builder
 {
+}
+
+/**
+ * Class TestCallStatic
+ *
+ * @method static $this make($tag = null, $attributes = null, $content = null, bool $closing = null, bool $linebreak = null)
+ *
+ * @package CodeSinging\PinAdmin\Tests\Viewless\Foundation
+ */
+class TestCallStatic extends Builder
+{
+
 }
 
 class TestInitialize extends Builder

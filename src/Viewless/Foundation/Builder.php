@@ -426,6 +426,26 @@ class Builder extends Buildable
     }
 
     /**
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return static
+     */
+    public static function __callStatic(string $name, array $arguments): self
+    {
+        if ($name === 'make') {
+            if (isset($arguments[0])) {
+                if ($arguments[0] instanceof Closure) {
+                    $arguments[0] = call_closure($arguments[0], new static());
+                }
+                return $arguments[0] instanceof self ? $arguments[0] : new static(...$arguments);
+            }
+            return new static();
+        }
+        return new static();
+    }
+
+    /**
      * Initialize the builder.
      */
     protected function initialize(): void

@@ -13,6 +13,7 @@ use CodeSinging\PinAdmin\Viewless\Components\Form;
 use CodeSinging\PinAdmin\Viewless\Components\Pagination;
 use CodeSinging\PinAdmin\Viewless\Components\Table;
 use CodeSinging\PinAdmin\Viewless\Elements\Div;
+use CodeSinging\PinAdmin\Viewless\Elements\Icon;
 
 class ModelView extends View
 {
@@ -99,9 +100,15 @@ class ModelView extends View
             ->total(':lists.total');
 
         $this->dialog = Dialog::make()
+            ->width(':dialog.width' . '+"%"')
+            ->top(':dialog.top' . '+"vh"')
+            ->fullscreen(':dialog.fullscreen')
+            ->slotTitle(Div::make()->add(Icon::make('el-icon-edit')->css('mr-1'), '编辑'))
+            ->linebreak()
             ->vModel('dialog.visible');
 
-        $this->form = Form::make(':formData');
+        $this->form = Form::make(':formData')
+            ->linebreak();
     }
 
     /**
@@ -123,10 +130,16 @@ class ModelView extends View
 
         $paginationContainer = Div::make()
             ->vIf('lists.data')
+            ->linebreak()
             ->css('bg-gray-50 p-2 mt-3')
             ->add($this->pagination);
 
-        $this->config->set('dialog.visible', false);
+        $this->config->set('dialog', [
+            'visible' => true,
+            'width' => 50,
+            'top' => 15,
+            'fullscreen' => false,
+        ]);
 
         $this->config->set('lists.pageable', $this->pageable);
         $this->pageable and $this->config->set('lists.size', $this->pageSize);
@@ -134,6 +147,23 @@ class ModelView extends View
         $this->config->set('formData', $this->form->defaults());
 
         $this->dialog->add($this->form);
+
+        $dialogFooter = Div::make()
+            ->linebreak()
+            ->css('flex items-center justify-between')
+            ->add(
+                Div::make()->add(
+                    Button::make()->icon(':dialogFullscreenIcon')->circle()->size_small()->onClick('onDialogFullscreen'),
+                    Button::make()->icon('el-icon-plus')->circle()->size_small()->onClick('onDialogZoomOut')->disabled(':onDialogZoomOutDisabled'),
+                    Button::make()->icon('el-icon-minus')->circle()->size_small()->onClick('onDialogZoomIn')->disabled(':onDialogZoomInDisabled'),
+                ),
+                Div::make()->add(
+                    Button::make('取消')->vAssign('dialog.visible', false),
+                    Button::make('保存', 'primary')->onClick('onFormSubmit')
+                )
+            );
+
+        $this->dialog->slotFooter($dialogFooter);
 
         $this->content->add(
             $headerBar,
