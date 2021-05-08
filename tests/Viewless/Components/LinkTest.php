@@ -15,4 +15,9 @@ class LinkTest extends TestCase
     {
         self::assertEquals('<el-link></el-link>', Link::make());
     }
+
+    public function testIconSuffix()
+    {
+        self::assertEquals("<el-link>查看<i class='el-icon-view el-icon--right'></i></el-link>", Link::make('查看')->iconSuffix('el-icon-view'));
+    }
 }

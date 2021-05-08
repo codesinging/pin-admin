@@ -7,6 +7,7 @@
 namespace CodeSinging\PinAdmin\Viewless\Components;
 
 use Closure;
+use CodeSinging\PinAdmin\Viewless\Elements\Icon;
 use CodeSinging\PinAdmin\Viewless\Foundation\Component;
 
 /**
@@ -30,6 +31,8 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Component;
  */
 class Link extends Component
 {
+    protected $iconSuffix;
+
     /**
      * Link constructor.
      *
@@ -46,5 +49,27 @@ class Link extends Component
         parent::__construct($attributes, $content);
         is_null($href) or $this->set('href', $href);
         is_null($type) or $this->set('type', $type);
+    }
+
+    /**
+     * Add an suffix icon.
+     *
+     * @param string $icon
+     *
+     * @return $this
+     */
+    public function iconSuffix(string $icon): self
+    {
+        $this->iconSuffix = $icon;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function ready(): void
+    {
+        parent::ready();
+        empty($this->iconSuffix) or $this->add(Icon::make($this->iconSuffix)->css('el-icon--right'));
     }
 }
