@@ -6,13 +6,13 @@
 
 namespace CodeSinging\PinAdmin\Tests\Viewless\Components;
 
-use CodeSinging\PinAdmin\Viewless\Components\Textarea;
+use CodeSinging\PinAdmin\Viewless\Components\ColorPicker;
 use Orchestra\Testbench\TestCase;
 
-class TextareaTest extends TestCase
+class ColorPickerTest extends TestCase
 {
     public function testBuild()
     {
-        self::assertEquals("<el-input type='textarea'></el-input>", Textarea::make());
+        self::assertEquals("<el-color-picker></el-color-picker>", ColorPicker::make());
     }
 }

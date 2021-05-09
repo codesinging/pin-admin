@@ -6,13 +6,13 @@
 
 namespace CodeSinging\PinAdmin\Tests\Viewless\Components;
 
-use CodeSinging\PinAdmin\Viewless\Components\Textarea;
+use CodeSinging\PinAdmin\Viewless\Components\Rate;
 use Orchestra\Testbench\TestCase;
 
-class TextareaTest extends TestCase
+class RateTest extends TestCase
 {
     public function testBuild()
     {
-        self::assertEquals("<el-input type='textarea'></el-input>", Textarea::make());
+        self::assertEquals("<el-rate></el-rate>", Rate::make());
     }
 }

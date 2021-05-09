@@ -13,6 +13,6 @@ class RadioTest extends TestCase
 {
     public function testBuild()
     {
-        self::assertEquals('<el-radio v-model="radio" label="1">选项</el-radio>', Radio::make('radio', '1', '选项')->build());
+        self::assertEquals("<el-radio v-model='radio' label='1'>选项</el-radio>", Radio::make('radio', '1', '选项')->build());
     }
 }

@@ -13,6 +13,6 @@ class RadioButtonTest extends TestCase
 {
     public function testBuild()
     {
-        self::assertEquals('<el-radio-button label="Male"></el-radio-button>', RadioButton::make('Male'));
+        self::assertEquals("<el-radio-button label='Male'></el-radio-button>", RadioButton::make('Male'));
     }
 }

@@ -13,6 +13,6 @@ class IconTest extends TestCase
 {
     public function testBuild()
     {
-        self::assertEquals('<i class="el-home"></i>', Icon::make('el-home'));
+        self::assertEquals("<i class='el-home'></i>", Icon::make('el-home'));
     }
 }

@@ -19,9 +19,6 @@ class InputTest extends TestCase
 
     public function testSlot()
     {
-        self::assertEquals(
-            '<el-input><template #prefix><i class="el-icon-home"></i></template></el-input>',
-            Input::make()->slotPrefix(Icon::make('el-icon-home'))
-        );
+        self::assertEquals("<el-input><template #prefix><i class='el-icon-home'></i></template></el-input>", Input::make()->slotPrefix(Icon::make('el-icon-home')));
     }
 }

@@ -34,6 +34,6 @@ class FormTest extends TestCase
         $form = Form::make(':data');
         $form->item('name')->input();
 
-        self::assertEquals('<el-form :model="data"><el-form-item prop="name"><el-input v-model="data.name"></el-input></el-form-item></el-form>', $form->build());
+        self::assertEquals("<el-form :model='data'><el-form-item prop='name'><el-input v-model='data.name'></el-input></el-form-item></el-form>", $form->build());
     }
 }

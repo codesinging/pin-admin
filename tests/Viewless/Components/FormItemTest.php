@@ -23,7 +23,7 @@ class FormItemTest extends TestCase
 
     public function testValidate()
     {
-        self::assertEquals('<el-form-item :rules="[{"required":true}]"></el-form-item>', FormItem::make()->validate(['required' => true])->build());
+        self::assertEquals("<el-form-item :rules='[{\"required\":true}]'></el-form-item>", FormItem::make()->validate(['required' => true])->build());
     }
 
     public function testDefault()

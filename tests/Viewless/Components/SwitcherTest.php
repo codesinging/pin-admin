@@ -14,6 +14,6 @@ class SwitcherTest extends TestCase
     public function testBuild()
     {
         self::assertEquals('<el-switch></el-switch>', Switcher::make());
-        self::assertEquals('<el-switch v-model="sex"></el-switch>', Switcher::make('sex'));
+        self::assertEquals("<el-switch v-model='sex'></el-switch>", Switcher::make('sex'));
     }
 }
