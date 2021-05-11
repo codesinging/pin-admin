@@ -7,6 +7,7 @@
 namespace CodeSinging\PinAdmin\Viewless\Components;
 
 use Closure;
+use CodeSinging\PinAdmin\Viewless\Composites\ActionTableColumn;
 use CodeSinging\PinAdmin\Viewless\Foundation\Buildable;
 use CodeSinging\PinAdmin\Viewless\Foundation\Component;
 
@@ -174,6 +175,22 @@ class Table extends Component
         is_array($label) and [$attributes, $label] = [$label, '更新时间'];
         is_null($label) and $label = '更新时间';
         return $this->column('updated_at', $label, $attributes);
+    }
+
+    /**
+     * Add an ActionTableColumn.
+     *
+     * @param array|string|ActionTableColumn|Closure|null $label
+     * @param array|null $attributes
+     *
+     * @return ActionTableColumn
+     */
+    public function actionColumn($label = null, array $attributes = null): ActionTableColumn
+    {
+        is_null($label) and $label = '操作';
+        $column = ActionTableColumn::make($label, $attributes);
+        $this->columns[] = $column;
+        return $column;
     }
 
     /**

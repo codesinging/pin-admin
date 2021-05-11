@@ -26,6 +26,8 @@ class AdminUsersController extends Controller
             $table->column('mobile', '手机号码')->align_center();
             $table->columnCreatedAt()->align_center();
             $table->columnUpdatedAt()->align_center();
+
+            $table->actionColumn('操作');
         });
 
         $view->form(function (Form $form){

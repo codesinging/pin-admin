@@ -22,38 +22,42 @@ class Slot extends Element
     /**
      * Template constructor.
      *
-     * @param string|array|null $property
+     * @param string|array|null $name
      * @param string|array|Buildable|Closure|null $content
+     * @param string|null $prop
      * @param bool|null $linebreak
      */
-    public function __construct($property = null, $content = null, bool $linebreak = null)
+    public function __construct($name = null, $content = null, string $prop = null, bool $linebreak = null)
     {
-        $attributes = [];
-        if (is_string($property)) {
-            $attributes = ["#{$property}"];
-        } elseif (is_array($property)) {
-            foreach ($property as $key => $value) {
-                $attributes["#{$key}"] = $value;
+        if (is_null($name)) {
+            $attributes = [];
+        } else {
+            if (is_string($name)) {
+                $attributes = is_null($prop) ? ["#{$name}"] : ["#{$name}" => $prop];
+            } elseif (is_array($name)) {
+                $attributes = ["#{$name[0]}" => $name[1]];
             }
         }
-        parent::__construct(null, $attributes, $content, true, $linebreak);
+
+        parent::__construct(null, $attributes ?? null, $content, true, $linebreak);
     }
 
     /**
      * Make a slot instance.
      *
-     * @param string|array|self|Closure|null $property
+     * @param string|array|Slot|Closure|null $name
      * @param string|array|Buildable|Closure|null $content
+     * @param string|null $prop
      * @param bool|null $linebreak
      *
      * @return static
      */
-    public static function make($property = null, $content = null, bool $linebreak = null): self
+    public static function make($name = null, $content = null, string $prop = null, bool $linebreak = null): self
     {
-        if ($property instanceof Closure) {
-            $property = call_closure($property, new static());
+        if ($name instanceof Closure) {
+            $name = call_closure($name, new static());
         }
 
-        return $property instanceof self ? $property : new static($property, $content, $linebreak);
+        return $name instanceof self ? $name : new static($name, $content, $prop, $linebreak);
     }
 }

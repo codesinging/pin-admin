@@ -27,6 +27,7 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Component;
  * @method $this size_small()
  * @method $this size_mini()
  *
+ * @method $this type_primary()
  * @method $this type_success()
  * @method $this type_warning()
  * @method $this type_danger()

@@ -35,8 +35,8 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Component;
  * @method $this onClose(string $handler = null, ...$parameters)
  * @method $this onClosed(string $handler = null, ...$parameters)
  *
- * @method $this slotTitle($contents, string $props = null)
- * @method $this slotFooter($contents, string $props = null)
+ * @method $this slotTitle($contents, string $props = null, bool $linebreak = null)
+ * @method $this slotFooter($contents, string $props = null, bool $linebreak = null)
  *
  * @package CodeSinging\PinAdmin\Viewless\Components
  */

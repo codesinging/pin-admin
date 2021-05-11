@@ -12,8 +12,9 @@
                     controller: @json($baseData['controllerName']),
                     lists: @json($configs['lists']),
                     data: @json($data),
-                    formData: @json($configs['formData']),
+                    defaults: @json($configs['defaults']),
                     dialog: @json($configs['dialog']),
+                    formData: null,
                 }
             },
             computed: {
@@ -30,6 +31,7 @@
             methods: {
                 onAddButtonClick() {
                     this.dialog.visible = true
+                    this.formData = Object.assign({}, this.defaults)
                 },
                 onRefreshButtonClick() {
                     this.refreshLists()
@@ -47,17 +49,45 @@
                     })
                 },
                 onFormSubmit() {
-
+                    this.$refs.form.validate(valid => {
+                        if (valid) {
+                            if (this.formData.id) {
+                                this.$http.put(this.controller + '/' + this.formData.id, this.formData, {label: 'submit'}).then(res => {
+                                    this.refreshLists()
+                                    this.dialog.visible = false
+                                })
+                            } else {
+                                this.$http.post(this.controller, this.formData, {label: 'submit'}).then(res => {
+                                    this.refreshLists()
+                                    this.dialog.visible = false
+                                })
+                            }
+                        } else {
+                            this.$message.warning('表单验证失败，请重试')
+                        }
+                    })
                 },
                 onDialogFullscreen() {
                     this.dialog.fullscreen = !this.dialog.fullscreen
                 },
                 onDialogZoomOut() {
                     this.dialog.width = Math.min(this.dialog.width + 20, 100)
+                    this.dialog.top = this.dialog.top - 5
                 },
                 onDialogZoomIn() {
                     this.dialog.width = Math.max(this.dialog.width - 20, 40)
+                    this.dialog.top = this.dialog.top + 5
                 },
+                onEditItem(scope) {
+                    this.dialog.visible = true
+                    this.formData = Object.assign({}, scope.row)
+                },
+                onDeleteItem(scope){
+
+                },
+            },
+            created() {
+                this.refreshLists()
             }
         })
     </script>

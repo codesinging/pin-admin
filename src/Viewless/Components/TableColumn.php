@@ -50,6 +50,9 @@ use CodeSinging\PinAdmin\Viewless\Foundation\Component;
  * @method $this headerAlign_center()
  * @method $this headerAlign_right()
  *
+ * @method $this slotDefault($contents, string $props = null, bool $linebreak = null)
+ * @method $this slotHeader($contents, string $props = null)
+ *
  * @package CodeSinging\PinAdmin\Viewless\Components
  */
 class TableColumn extends Component
@@ -59,14 +62,18 @@ class TableColumn extends Component
      *
      * @param array|string|null $prop
      * @param array|string|null $label
-     * @param array|null $attributes
      * @param array|string|Buildable|Closure|null $content
+     * @param array|null $attributes
+     * @param bool|null $linebreak
      */
-    public function __construct($prop = null, $label = null, array $attributes = null, $content = null)
+    public function __construct($prop = null, $label = null, $content = null, array $attributes = null, bool $linebreak = null)
     {
         is_array($prop) and [$attributes, $prop] = [$prop, null];
         is_array($label) and [$attributes, $label] = [$label, null];
-        parent::__construct($attributes, $content);
+        is_array($content) and [$attributes, $content] = [$content, null];
+
+        parent::__construct($attributes, $content, $linebreak);
+
         is_null($prop) or $this->set('prop', $prop);
         is_null($label) or $this->set('label', $label);
     }

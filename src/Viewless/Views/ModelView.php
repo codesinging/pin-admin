@@ -103,11 +103,13 @@ class ModelView extends View
             ->width(':dialog.width' . '+"%"')
             ->top(':dialog.top' . '+"vh"')
             ->fullscreen(':dialog.fullscreen')
-            ->slotTitle(Div::make()->add(Icon::make('el-icon-edit')->css('mr-1'), '编辑'))
+            ->slotTitle(Div::make()->add(Icon::make('el-icon-edit')->css('mr-1'), '编辑'), null, true)
             ->linebreak()
             ->vModel('dialog.visible');
 
         $this->form = Form::make(':formData')
+            ->ref('form')
+            ->disabled(':state.submit')
             ->linebreak();
     }
 
@@ -135,16 +137,16 @@ class ModelView extends View
             ->add($this->pagination);
 
         $this->config->set('dialog', [
-            'visible' => true,
+            'visible' => false,
             'width' => 50,
-            'top' => 15,
+            'top' => 20,
             'fullscreen' => false,
         ]);
 
         $this->config->set('lists.pageable', $this->pageable);
         $this->pageable and $this->config->set('lists.size', $this->pageSize);
 
-        $this->config->set('formData', $this->form->defaults());
+        $this->config->set('defaults', $this->form->defaults());
 
         $this->dialog->add($this->form);
 
@@ -156,14 +158,14 @@ class ModelView extends View
                     Button::make()->icon(':dialogFullscreenIcon')->circle()->size_small()->onClick('onDialogFullscreen'),
                     Button::make()->icon('el-icon-plus')->circle()->size_small()->onClick('onDialogZoomOut')->disabled(':onDialogZoomOutDisabled'),
                     Button::make()->icon('el-icon-minus')->circle()->size_small()->onClick('onDialogZoomIn')->disabled(':onDialogZoomInDisabled'),
-                ),
+                )->linebreak(),
                 Div::make()->add(
                     Button::make('取消')->vAssign('dialog.visible', false),
-                    Button::make('保存', 'primary')->onClick('onFormSubmit')
-                )
+                    Button::make('保存', 'primary')->onClick('onFormSubmit')->loading(':state.submit')
+                )->linebreak()
             );
 
-        $this->dialog->slotFooter($dialogFooter);
+        $this->dialog->slotFooter($dialogFooter, null, true);
 
         $this->content->add(
             $headerBar,

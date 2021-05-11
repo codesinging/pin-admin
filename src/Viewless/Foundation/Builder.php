@@ -7,6 +7,7 @@
 namespace CodeSinging\PinAdmin\Viewless\Foundation;
 
 use Closure;
+use CodeSinging\PinAdmin\Viewless\Elements\Slot;
 use Illuminate\Config\Repository;
 use Illuminate\Support\Str;
 
@@ -302,23 +303,18 @@ class Builder extends Buildable
     /**
      * Add a named slot content to the content flow.
      *
-     * @param string $name
-     * @param string|array|Builder|Buildable|Closure $content
+     * @param string|array|Slot|Closure|null $name
+     * @param string|array|Buildable|Closure|null $content
      * @param string|null $prop
+     * @param bool|null $linebreak
      *
      * @return $this
      */
-    public function slot(string $name, $content, string $prop = null): self
+    public function slot($name = null, $content = null, string $prop = null, bool $linebreak = null): self
     {
-        if ($content instanceof Closure) {
-            $content = call_closure($content, new Content());
-        }
+        $slot = Slot::make($name, $content, $prop, $linebreak);
 
-        $attributes = is_null($prop) ? ["#{$name}"] : ["#{$name}" => $prop];
-
-        $builder = new self('template', $attributes, $content);
-
-        $this->add($builder);
+        $this->add($slot);
 
         return $this;
     }
@@ -417,7 +413,7 @@ class Builder extends Buildable
             $this->vOn($event, $handler);
         } elseif (preg_match('/slot[A-Z][a-zA-Z]+/', $name)) {
             $slotName = lcfirst(substr($name, 4));
-            $this->slot($slotName, $arguments[0] ?? null, $arguments[1] ?? null);
+            $this->slot($slotName, $arguments[0] ?? null, $arguments[1] ?? null, $arguments[2] ?? null);
         } else {
             $this->set($name, $arguments[0] ?? true);
         }
