@@ -71,10 +71,10 @@ class FormItem extends Component
 
         parent::__construct($attributes, $content, $linebreak);
 
+        $this->validate = Validate::make();
+
         is_null($prop) or $this->set('prop', $prop);
         is_null($label) or $this->set('label', $label);
-
-        $this->validate = Validate::make();
     }
 
     /**
@@ -125,6 +125,32 @@ class FormItem extends Component
     }
 
     /**
+     * Add validate rules.
+     *
+     * @param array|string|Closure|Rule ...$rules
+     *
+     * @return $this
+     */
+    public function validate_add(...$rules): self
+    {
+        $this->validate->rule_add(...$rules);
+        return $this;
+    }
+
+    /**
+     * Add validate rules.
+     *
+     * @param array|string|Closure|Rule ...$rules
+     *
+     * @return $this
+     */
+    public function validate_edit(...$rules): self
+    {
+        $this->validate->rule_edit(...$rules);
+        return $this;
+    }
+
+    /**
      * Set or get default value.
      *
      * @param mixed|null $default
@@ -149,8 +175,14 @@ class FormItem extends Component
 
         is_null($this->component) or $this->add($this->component);
 
-        if ($rules = $this->validate->data()) {
-            $this->set('rules', array_merge($rules, $this->get('rules', [])));
+        $rules = array_merge($this->get('rules', []), $this->validate->data());
+
+        if (empty($rules['add']) && empty($rules['edit'])){
+            empty($rules['both']) or $this->set('rules', $rules['both']);
+        } else {
+            $addRules = array_merge($rules['both'], $rules['add']);
+            $editRules = array_merge($rules['both'], $rules['edit']);
+            $this->set('rules', sprintf(':isEdit ? %s : %s', json_encode($editRules), json_encode($addRules)));
         }
     }
 }

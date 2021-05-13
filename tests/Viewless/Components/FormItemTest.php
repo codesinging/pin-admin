@@ -24,6 +24,8 @@ class FormItemTest extends TestCase
     public function testValidate()
     {
         self::assertEquals("<el-form-item :rules='[{\"required\":true}]'></el-form-item>", FormItem::make()->validate(['required' => true])->build());
+        self::assertEquals("<el-form-item :rules='isEdit ? [{\"required\":true}] : []'></el-form-item>", FormItem::make()->validate_edit(['required' => true])->build());
+        self::assertEquals("<el-form-item :rules='isEdit ? [{\"required\":true},{\"type\":\"number\"}] : [{\"required\":true}]'></el-form-item>", FormItem::make()->validate(['required' => true])->validate_edit(['type' => 'number'])->build());
     }
 
     public function testDefault()

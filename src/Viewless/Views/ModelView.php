@@ -12,6 +12,7 @@ use CodeSinging\PinAdmin\Viewless\Components\Dialog;
 use CodeSinging\PinAdmin\Viewless\Components\Form;
 use CodeSinging\PinAdmin\Viewless\Components\Pagination;
 use CodeSinging\PinAdmin\Viewless\Components\Table;
+use CodeSinging\PinAdmin\Viewless\Composites\ActionTableColumn;
 use CodeSinging\PinAdmin\Viewless\Elements\Div;
 use CodeSinging\PinAdmin\Viewless\Elements\Icon;
 
@@ -37,6 +38,21 @@ class ModelView extends View
      * @var Button
      */
     public $refreshButton;
+
+    /**
+     * @var Button
+     */
+    public $editButton;
+
+    /**
+     * @var Button
+     */
+    public $deleteButton;
+
+    /**
+     * @var ActionTableColumn
+     */
+    public $actionColumn;
 
     /**
      * @var Table
@@ -86,12 +102,26 @@ class ModelView extends View
             ->loading(':state.refresh')
             ->icon('el-icon-refresh');
 
+        $this->editButton = Button::make('编辑')
+            ->onClick('onEditItem(scope)')
+            ->type_primary()
+            ->size_mini();
+
+        $this->deleteButton = Button::make('删除')
+            ->onClick('onDeleteItem(scope)')
+            ->loading(':state["delete_"+scope.row.id]')
+            ->type_danger()
+            ->size_mini();
+
         $this->table = Table::make()
             ->data(':lists.data')
             ->css('mt-3')
             ->vLoading('state.refresh')
             ->linebreak()
             ->border();
+
+        $this->actionColumn = ActionTableColumn::make('操作')
+            ->align_center();
 
         $this->pagination = Pagination::make()
             ->background()
@@ -103,13 +133,15 @@ class ModelView extends View
             ->width(':dialog.width' . '+"%"')
             ->top(':dialog.top' . '+"vh"')
             ->fullscreen(':dialog.fullscreen')
-            ->slotTitle(Div::make()->add(Icon::make('el-icon-edit')->css('mr-1'), '编辑'), null, true)
+            ->slotTitle(Div::make()->add(Icon::make('el-icon-edit')->css('mr-1'))->interpolation('dialog.title'), null, true)
             ->linebreak()
+            ->onClosed('onDialogClosed')
             ->vModel('dialog.visible');
 
         $this->form = Form::make(':formData')
             ->ref('form')
             ->disabled(':state.submit')
+            ->vOn('keyup.enter', 'onFormSubmit')
             ->linebreak();
     }
 
@@ -130,6 +162,10 @@ class ModelView extends View
             ->css('flex items-center justify-between')
             ->linebreak();
 
+        $this->actionColumn->addButtons($this->editButton, $this->deleteButton);
+
+        $this->table->addColumn($this->actionColumn);
+
         $paginationContainer = Div::make()
             ->vIf('lists.data')
             ->linebreak()
@@ -137,6 +173,7 @@ class ModelView extends View
             ->add($this->pagination);
 
         $this->config->set('dialog', [
+            'title' => '',
             'visible' => false,
             'width' => 50,
             'top' => 20,

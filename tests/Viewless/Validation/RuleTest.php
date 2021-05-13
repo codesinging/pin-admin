@@ -40,4 +40,12 @@ class RuleTest extends TestCase
     {
         self::assertEquals(['type' => 'number'], Rule::make()->type_number()->data());
     }
+
+    public function testScene()
+    {
+        self::assertEquals('both', Rule::make()->scene());
+        self::assertEquals('add', Rule::make()->scene('add')->scene());
+        self::assertEquals('add', Rule::make()->scene_add()->scene());
+        self::assertEquals('edit', Rule::make()->scene_edit()->scene());
+    }
 }

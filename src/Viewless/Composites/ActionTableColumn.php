@@ -25,21 +25,9 @@ class ActionTableColumn extends TableColumn
     protected $baseTag = 'table-column';
 
     /**
-     * @var Button
+     * @var Button[]
      */
-    public $editButton;
-
-    /**
-     * @var Button
-     */
-    public $deleteButton;
-
-    /**
-     * @var string[]
-     */
-    protected $attributes = [
-        'align' => 'center',
-    ];
+    protected $buttons = [];
 
     /**
      * ActionTableColumn constructor.
@@ -54,23 +42,47 @@ class ActionTableColumn extends TableColumn
     }
 
     /**
-     * @inheritDoc
+     * Add a button.
+     *
+     * @param string|array|Closure|self|null $text
+     * @param string|array|null $type
+     * @param array|null $attributes
+     *
+     * @return Button
      */
-    protected function initialize(): void
+    public function button($text = null, $type = null, $attributes = null): Button
     {
-        parent::initialize();
+        $button = Button::make($text, $type, $attributes);
+        $this->buttons[] = $button;
+        return $button;
+    }
 
-        $this->linebreak();
+    /**
+     * Add a button.
+     *
+     * @param string|array|Closure|self|null $text
+     * @param string|array|null $type
+     * @param array|null $attributes
+     *
+     * @return $this
+     */
+    public function addButton($text = null, $type = null, $attributes = null): self
+    {
+        $this->button($text, $type, $attributes);
+        return $this;
+    }
 
-        $this->editButton = Button::make('编辑')
-            ->onClick('onEditItem(scope)')
-            ->type_primary()
-            ->size_mini();
-
-        $this->deleteButton = Button::make('删除')
-            ->onClick('onDeleteItem(scope)')
-            ->type_danger()
-            ->size_mini();
+    /**
+     * Add buttons.
+     *
+     * @param Button ...$buttons
+     *
+     * @return $this
+     */
+    public function addButtons(...$buttons): self
+    {
+        $this->buttons = array_merge($this->buttons, $buttons);
+        return $this;
     }
 
     /**
@@ -80,9 +92,6 @@ class ActionTableColumn extends TableColumn
     {
         parent::ready();
 
-        $this->slotDefault([
-            $this->editButton,
-            $this->deleteButton
-        ], 'scope', true);
+        $this->buttons and $this->slotDefault($this->buttons, 'scope', true);
     }
 }

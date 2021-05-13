@@ -15,6 +15,7 @@
                     defaults: @json($configs['defaults']),
                     dialog: @json($configs['dialog']),
                     formData: null,
+                    isEdit: false,
                 }
             },
             computed: {
@@ -30,7 +31,9 @@
             },
             methods: {
                 onAddButtonClick() {
-                    this.dialog.visible = true
+                    this.isEdit = false,
+                        this.dialog.visible = true
+                    this.dialog.title = '新增'
                     this.formData = Object.assign({}, this.defaults)
                 },
                 onRefreshButtonClick() {
@@ -52,12 +55,12 @@
                     this.$refs.form.validate(valid => {
                         if (valid) {
                             if (this.formData.id) {
-                                this.$http.put(this.controller + '/' + this.formData.id, this.formData, {label: 'submit'}).then(res => {
+                                this.$put(this.controller + '/' + this.formData.id, this.formData, {label: 'submit'}).then(res => {
                                     this.refreshLists()
                                     this.dialog.visible = false
                                 })
                             } else {
-                                this.$http.post(this.controller, this.formData, {label: 'submit'}).then(res => {
+                                this.$post(this.controller, this.formData, {label: 'submit'}).then(res => {
                                     this.refreshLists()
                                     this.dialog.visible = false
                                 })
@@ -78,12 +81,27 @@
                     this.dialog.width = Math.max(this.dialog.width - 20, 40)
                     this.dialog.top = this.dialog.top + 5
                 },
+                onDialogClosed() {
+                    this.$refs.form.clearValidate()
+                },
                 onEditItem(scope) {
+                    this.isEdit = true
                     this.dialog.visible = true
+                    this.dialog.title = '编辑'
                     this.formData = Object.assign({}, scope.row)
                 },
-                onDeleteItem(scope){
-
+                onDeleteItem(scope) {
+                    this.$confirm('删除后无法恢复，确定要删除吗？', '提示', {
+                        type: 'warning',
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(() => {
+                        this.$delete('admin_users/' + scope.row.id, {label: 'delete_' + scope.row.id}).then(res => {
+                            this.refreshLists()
+                        })
+                    }).catch(() => {
+                        this.$message.info('取消删除操作')
+                    })
                 },
             },
             created() {

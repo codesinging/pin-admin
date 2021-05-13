@@ -53,6 +53,36 @@ class Validate
     }
 
     /**
+     * Add validation rules.
+     *
+     * @param array|string|Closure|Rule ...$rules
+     *
+     * @return $this
+     */
+    public function rule_add(...$rules): self
+    {
+        foreach ($rules as $rule) {
+            $this->rules[] = Rule::make($rule)->scene_add();
+        }
+        return $this;
+    }
+
+    /**
+     * Add validation rules.
+     *
+     * @param array|string|Closure|Rule ...$rules
+     *
+     * @return $this
+     */
+    public function rule_edit(...$rules): self
+    {
+        foreach ($rules as $rule) {
+            $this->rules[] = Rule::make($rule)->scene_edit();
+        }
+        return $this;
+    }
+
+    /**
      * Get all rules.
      *
      * @return Rule[]
@@ -69,9 +99,13 @@ class Validate
      */
     public function data(): array
     {
-        $data = [];
+        $data = [
+            'both' => [],
+            'add' => [],
+            'edit' => []
+        ];
         foreach ($this->rules as $rule) {
-            $data[] = $rule->data();
+            $data[$rule->scene()][] = $rule->data();
         }
 
         return $data;

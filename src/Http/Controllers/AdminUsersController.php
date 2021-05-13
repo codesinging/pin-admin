@@ -9,6 +9,7 @@ namespace CodeSinging\PinAdmin\Http\Controllers;
 use CodeSinging\PinAdmin\Http\Requests\AdminUserRequest;
 use CodeSinging\PinAdmin\Models\AdminUser;
 use CodeSinging\PinAdmin\Viewless\Components\Form;
+use CodeSinging\PinAdmin\Viewless\Components\Input;
 use CodeSinging\PinAdmin\Viewless\Components\Table;
 use CodeSinging\PinAdmin\Viewless\Views\ModelView;
 use Illuminate\Http\JsonResponse;
@@ -18,8 +19,6 @@ class AdminUsersController extends Controller
 {
     public function index(ModelView $view)
     {
-//        return $this->adminView('admin_users.index');
-
         $view->table(function (Table $table){
             $table->columnId();
             $table->column('name', '名称');
@@ -27,11 +26,12 @@ class AdminUsersController extends Controller
             $table->columnCreatedAt()->align_center();
             $table->columnUpdatedAt()->align_center();
 
-            $table->actionColumn('操作');
         });
 
         $view->form(function (Form $form){
             $form->item('name','用户名称')->input()->default('admin')->validate('required');
+            $form->item('mobile','手机号码')->input()->validate('required');
+            $form->item('password', '登录密码')->input(Input::make()->showPassword())->validate_add('required');
         });
 
         return $view->render();

@@ -27,6 +27,10 @@ use Illuminate\Support\Str;
  * @method $this type_hex()
  * @method $this type_email()
  *
+ * @method $this scene_add()
+ * @method $this scene_edit()
+ * @method $this scene_both()
+ *
  * @package CodeSinging\PinAdmin\Viewless\Validation
  */
 class Rule
@@ -37,6 +41,13 @@ class Rule
      * @var array
      */
     protected $data = [];
+
+    /**
+     * The validation scene.
+     *
+     * @var string
+     */
+    protected $scene = 'both';
 
     /**
      * @var array
@@ -254,6 +265,22 @@ class Rule
     }
 
     /**
+     * Get or set validation scene.
+     *
+     * @param string|null $scene
+     *
+     * @return $this|string
+     */
+    public function scene(string $scene = null)
+    {
+        if (is_null($scene)) {
+            return $this->scene;
+        }
+        $this->scene = $scene;
+        return $this;
+    }
+
+    /**
      * @param string $method
      * @param array $parameters
      *
@@ -262,8 +289,9 @@ class Rule
     public function __call(string $method, array $parameters = []): self
     {
         if (Str::startsWith($method, 'type_') && strlen($method) > 2) {
-            $type = lcfirst(substr($method, 5));
-            $this->type($type);
+            $this->type(substr($method, 5));
+        } elseif (Str::startsWith($method, 'scene_') && strlen($method) > 6){
+            $this->scene(substr($method, 6));
         }
 
         return $this;

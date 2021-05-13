@@ -178,22 +178,6 @@ class Table extends Component
     }
 
     /**
-     * Add an ActionTableColumn.
-     *
-     * @param array|string|ActionTableColumn|Closure|null $label
-     * @param array|null $attributes
-     *
-     * @return ActionTableColumn
-     */
-    public function actionColumn($label = null, array $attributes = null): ActionTableColumn
-    {
-        is_null($label) and $label = '操作';
-        $column = ActionTableColumn::make($label, $attributes);
-        $this->columns[] = $column;
-        return $column;
-    }
-
-    /**
      * Return all TableColumns.
      *
      * @return TableColumn[]
