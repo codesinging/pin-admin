@@ -103,6 +103,14 @@
                         this.$message.info('取消删除操作')
                     })
                 },
+                onSwitchChange(scope) {
+                    this.updateItem(scope.row)
+                },
+                updateItem(row) {
+                    this.$put(this.controller + '/' + row.id, row, {label: 'update_' + row.id}).then(res => {
+                        this.refreshLists()
+                    })
+                },
             },
             created() {
                 this.refreshLists()

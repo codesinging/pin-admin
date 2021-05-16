@@ -31,28 +31,4 @@ class TableTest extends TestCase
             $table->build()
         );
     }
-
-    public function testColumnId()
-    {
-        self::assertEquals(
-            "<el-table-column prop='id' label='ID' align='center'></el-table-column>",
-            Table::make()->columnId()->build()
-        );
-    }
-
-    public function testColumnCreatedAt()
-    {
-        self::assertEquals(
-            "<el-table-column prop='created_at' label='创建时间'></el-table-column>",
-            Table::make()->columnCreatedAt()->build()
-        );
-    }
-
-    public function testColumnUpdatedAt()
-    {
-        self::assertEquals(
-            "<el-table-column prop='updated_at' label='更新时间'></el-table-column>",
-            Table::make()->columnUpdatedAt()->build()
-        );
-    }
 }

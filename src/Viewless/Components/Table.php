@@ -136,48 +136,6 @@ class Table extends Component
     }
 
     /**
-     * Add an `id` column.
-     *
-     * @param array $attributes
-     *
-     * @return TableColumn
-     */
-    public function columnId(array $attributes = []): TableColumn
-    {
-        return $this->column('id', 'ID', $attributes)->align_center();
-    }
-
-    /**
-     * Add a `created_at` column.
-     *
-     * @param array|string|null $label
-     * @param array $attributes
-     *
-     * @return TableColumn
-     */
-    public function columnCreatedAt($label = null, array $attributes = []): TableColumn
-    {
-        is_array($label) and [$attributes, $label] = [$label, '创建时间'];
-        is_null($label) and $label = '创建时间';
-        return $this->column('created_at', $label, $attributes);
-    }
-
-    /**
-     * Add a `updated_at` column.
-     *
-     * @param array|string|null $label
-     * @param array $attributes
-     *
-     * @return TableColumn
-     */
-    public function columnUpdatedAt($label = null, array $attributes = []): TableColumn
-    {
-        is_array($label) and [$attributes, $label] = [$label, '更新时间'];
-        is_null($label) and $label = '更新时间';
-        return $this->column('updated_at', $label, $attributes);
-    }
-
-    /**
      * Return all TableColumns.
      *
      * @return TableColumn[]

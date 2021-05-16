@@ -10,7 +10,7 @@ use CodeSinging\PinAdmin\Http\Requests\AdminUserRequest;
 use CodeSinging\PinAdmin\Models\AdminUser;
 use CodeSinging\PinAdmin\Viewless\Components\Form;
 use CodeSinging\PinAdmin\Viewless\Components\Input;
-use CodeSinging\PinAdmin\Viewless\Components\Table;
+use CodeSinging\PinAdmin\Viewless\Composites\ExtendedTable;
 use CodeSinging\PinAdmin\Viewless\Views\ModelView;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
@@ -19,12 +19,13 @@ class AdminUsersController extends Controller
 {
     public function index(ModelView $view)
     {
-        $view->table(function (Table $table){
+        $view->table(function (ExtendedTable $table){
             $table->columnId();
             $table->column('name', '名称');
             $table->column('mobile', '手机号码')->align_center();
             $table->columnCreatedAt()->align_center();
             $table->columnUpdatedAt()->align_center();
+            $table->switchColumn('status', '状态')->align_center();
 
         });
 

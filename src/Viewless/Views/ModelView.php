@@ -11,8 +11,8 @@ use CodeSinging\PinAdmin\Viewless\Components\Button;
 use CodeSinging\PinAdmin\Viewless\Components\Dialog;
 use CodeSinging\PinAdmin\Viewless\Components\Form;
 use CodeSinging\PinAdmin\Viewless\Components\Pagination;
-use CodeSinging\PinAdmin\Viewless\Components\Table;
 use CodeSinging\PinAdmin\Viewless\Composites\ActionTableColumn;
+use CodeSinging\PinAdmin\Viewless\Composites\ExtendedTable;
 use CodeSinging\PinAdmin\Viewless\Elements\Div;
 use CodeSinging\PinAdmin\Viewless\Elements\Icon;
 
@@ -55,7 +55,7 @@ class ModelView extends View
     public $actionColumn;
 
     /**
-     * @var Table
+     * @var ExtendedTable
      */
     public $table;
 
@@ -113,7 +113,7 @@ class ModelView extends View
             ->type_danger()
             ->size_mini();
 
-        $this->table = Table::make()
+        $this->table = ExtendedTable::make()
             ->data(':lists.data')
             ->css('mt-3')
             ->vLoading('state.refresh')
@@ -215,7 +215,7 @@ class ModelView extends View
     /**
      * Set table for the view.
      *
-     * @param Table|Closure $table
+     * @param ExtendedTable|Closure $table
      *
      * @return $this
      */
@@ -225,7 +225,7 @@ class ModelView extends View
             $table = call_closure($table, $this->table);
         }
 
-        if ($table instanceof Table) {
+        if ($table instanceof ExtendedTable) {
             $this->table = $table;
         }
 
